@@ -4,7 +4,7 @@ project(LightWeightGUI)
 set(CMAKE_CXX_STANDARD 20)
 
 include(FetchContent)
-
+set(FETCHCONTENT_QUIET OFF)
 # SDL2
 FetchContent_Declare(
   SDL2
@@ -43,4 +43,22 @@ add_executable(LightWeightGUI
     src/Shader.cpp
 )
 target_include_directories(LightWeightGUI PRIVATE include)
-target_link_libraries(LightWeightGUI PRIVATE SDL2::SDL2 glad OpenGL::GL)
+if(WIN32)
+target_link_libraries(LightWeightGUI PRIVATE
+        SDL2::SDL2main
+        SDL2::SDL2
+        glad
+        OpenGL::GL)
+
+  add_custom_command(TARGET LightWeightGUI POST_BUILD
+          COMMAND ${CMAKE_COMMAND} -E copy_if_different
+          $<TARGET_FILE:SDL2::SDL2>
+          $<TARGET_FILE_DIR:LightWeightGUI>
+  )
+
+else ()
+  target_link_libraries(LightWeightGUI PRIVATE
+          SDL2::SDL2
+          glad
+          OpenGL::GL)
+endif ()

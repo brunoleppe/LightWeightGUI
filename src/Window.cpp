@@ -40,7 +40,6 @@ namespace lw
 
     Window::~Window()
     {
-        Application::unregisterWindow(this);
         if (m_glContext) SDL_GL_DeleteContext(m_glContext);
         if (m_window) SDL_DestroyWindow(m_window);
     }

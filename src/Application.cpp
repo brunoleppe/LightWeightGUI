@@ -36,6 +36,8 @@ namespace lw
                 window->swapBuffers();
             }
         }
+        s_windows.clear();
+
     }
 
     void Application::registerWindow(std::unique_ptr<Window>&& window)
