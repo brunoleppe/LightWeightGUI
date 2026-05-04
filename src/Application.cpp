@@ -24,19 +24,15 @@ namespace lw
         SDL_Quit();
     }
 
-    void Application::run(const std::function<void()>& updateFunc)
+    void Application::run()
     {
         while (m_running && !s_windows.empty())
         {
             pollEvents();
 
-            if (updateFunc)
-            {
-                updateFunc();
-            }
-
             for (auto const& [id, window] : s_windows)
             {
+                window->clear(0.2f, 0.2f, 0.2f, 1.0f);
                 window->swapBuffers();
             }
         }
@@ -47,7 +43,7 @@ namespace lw
         s_windows[window->getID()] = std::move(window);
     }
 
-    void Application::unregisterWindow(std::unique_ptr<Window>&& window)
+    void Application::unregisterWindow(Window* window)
     {
         s_windows.erase(window->getID());
     }
@@ -69,7 +65,7 @@ namespace lw
                 {
                     if (e.window.event == SDL_WINDOWEVENT_CLOSE)
                     {
-                        unregisterWindow(std::move(it->second));
+                        unregisterWindow(it->second.get());
                     }
                     else
                     {

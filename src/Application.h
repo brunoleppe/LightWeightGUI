@@ -14,10 +14,10 @@ public:
     Application();
     ~Application();
 
-    void run(const std::function<void()>& updateFunc);
+    void run();
 
     static void registerWindow(std::unique_ptr<Window>&& window);
-    static void unregisterWindow(std::unique_ptr<Window>&& window);
+    static void unregisterWindow(Window* window);
 
 private:
     void pollEvents();

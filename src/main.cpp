@@ -23,11 +23,7 @@ int main(int argc, char* argv[]) {
     lw::Application::registerWindow(lw::Window::create("LightWeightGUI2", 400, 400));
     lw::Shader shader(vertexShaderSource, fragmentShaderSource);
 
-
-    app.run([&]() {
-        window.clear(0.2f, 0.3f, 0.3f, 1.0f);
-        window1.clear(0.1f, 0.1f, 0.3f, 1.0f);
-    });
+    app.run();
 
     return 0;
 }

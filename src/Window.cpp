@@ -6,7 +6,8 @@ namespace lw
 {
     std::unique_ptr<Window> Window::create(const std::string& title, int width, int height)
     {
-        return std::make_unique<Window>(title, width, height);
+        auto* window = new Window(title, width, height);
+        return std::make_unique<Window>(*window);
     }
 
     Window::Window(const std::string& title, int width, int height)
@@ -35,7 +36,6 @@ namespace lw
             std::cerr << "Failed to initialize GLAD" << std::endl;
             return;
         }
-
     }
 
     Window::~Window()
@@ -47,7 +47,6 @@ namespace lw
 
     void Window::onEvent(const SDL_Event& event)
     {
-
     }
 
     void Window::swapBuffers()
