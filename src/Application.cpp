@@ -4,8 +4,6 @@
 
 namespace lw
 {
-    std::map<uint32_t, std::unique_ptr<Window>> Application::s_windows;
-
     Application::Application()
     {
         if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -17,6 +15,7 @@ namespace lw
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+        SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
     }
 
     Application::~Application()
@@ -26,28 +25,32 @@ namespace lw
 
     void Application::run()
     {
-        while (m_running && !s_windows.empty())
+        while (m_running && !m_windows.empty())
         {
             pollEvents();
 
-            for (auto const& [id, window] : s_windows)
+            for (auto const& [id, window] : m_windows)
             {
                 window->clear(0.2f, 0.2f, 0.2f, 1.0f);
                 window->swapBuffers();
             }
         }
-        s_windows.clear();
+        m_windows.clear();
 
     }
 
     void Application::registerWindow(std::unique_ptr<Window>&& window)
     {
-        s_windows[window->getID()] = std::move(window);
+        if (m_mainWindow == nullptr)
+        {
+            m_mainWindow = window.get();
+        }
+        m_windows[window->getID()] = std::move(window);
     }
 
     void Application::unregisterWindow(Window* window)
     {
-        s_windows.erase(window->getID());
+        m_windows.erase(window->getID());
     }
 
     void Application::pollEvents()
@@ -62,12 +65,17 @@ namespace lw
 
             if (e.type == SDL_WINDOWEVENT)
             {
-                auto it = s_windows.find(e.window.windowID);
-                if (it != s_windows.end())
+                auto it = m_windows.find(e.window.windowID);
+                if (it != m_windows.end())
                 {
                     if (e.window.event == SDL_WINDOWEVENT_CLOSE)
                     {
+                        if (it->second.get() == m_mainWindow)
+                        {
+                            m_running = false;
+                        }
                         unregisterWindow(it->second.get());
+
                     }
                     else
                     {

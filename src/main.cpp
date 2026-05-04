@@ -19,8 +19,8 @@ const char* fragmentShaderSource = "#version 330 core\n"
 
 int main(int argc, char* argv[]) {
     lw::Application app;
-    lw::Application::registerWindow(lw::Window::create("LightWeightGUI", 800, 600));
-    lw::Application::registerWindow(lw::Window::create("LightWeightGUI2", 400, 400));
+    app.registerWindow(lw::Window::create("LightWeightGUI", 800, 600));
+    app.registerWindow(lw::Window::create("LightWeightGUI2", 400, 400));
     lw::Shader shader(vertexShaderSource, fragmentShaderSource);
 
     app.run();

@@ -16,14 +16,15 @@ public:
 
     void run();
 
-    static void registerWindow(std::unique_ptr<Window>&& window);
-    static void unregisterWindow(Window* window);
+    void registerWindow(std::unique_ptr<Window>&& window);
+    void unregisterWindow(Window* window);
 
 private:
     void pollEvents();
     
     bool m_running = true;
-    static std::map<uint32_t, std::unique_ptr<Window>> s_windows;
+    Window* m_mainWindow{nullptr};
+    std::map<uint32_t, std::unique_ptr<Window>> m_windows;
 
     // Prevent copying
     Application(const Application&) = delete;
