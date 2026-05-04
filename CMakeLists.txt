@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(LightWeigthGUI)
+project(LightWeightGUI)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -26,30 +26,21 @@ if(NOT glad_gen_POPULATED)
   FetchContent_Populate(glad_gen)
 endif()
 
-# Run GLAD generator
-message(STATUS "Generating GLAD...")
 execute_process(
   COMMAND python3 -m glad --generator c --spec gl --out-path ${CMAKE_BINARY_DIR}/glad --profile core --api "gl=3.3"
   WORKING_DIRECTORY ${glad_gen_SOURCE_DIR}
-  RESULT_VARIABLE GLAD_GEN_RESULT
 )
-
-if (NOT GLAD_GEN_RESULT EQUAL 0)
-    # Try calling via __main__.py if -m glad doesn't work
-    execute_process(
-      COMMAND python3 -m glad --generator c --spec gl --out-path ${CMAKE_BINARY_DIR}/glad --profile core --api "gl=3.3"
-      WORKING_DIRECTORY ${glad_gen_SOURCE_DIR}
-      RESULT_VARIABLE GLAD_GEN_RESULT_2
-    )
-    if (NOT GLAD_GEN_RESULT_2 EQUAL 0)
-        message(FATAL_ERROR "Failed to generate GLAD")
-    endif()
-endif()
 
 add_library(glad ${CMAKE_BINARY_DIR}/glad/src/glad.c)
 target_include_directories(glad PUBLIC ${CMAKE_BINARY_DIR}/glad/include)
 
 find_package(OpenGL REQUIRED)
 
-add_executable(LightWeigthGUI src/main.cpp)
-target_link_libraries(LightWeigthGUI PRIVATE SDL2::SDL2 glad OpenGL::GL)
+add_executable(LightWeightGUI
+    src/main.cpp 
+    src/Application.cpp
+    src/Window.cpp 
+    src/Shader.cpp
+)
+target_include_directories(LightWeightGUI PRIVATE include)
+target_link_libraries(LightWeightGUI PRIVATE SDL2::SDL2 glad OpenGL::GL)
