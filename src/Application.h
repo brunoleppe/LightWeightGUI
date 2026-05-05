@@ -1,13 +1,11 @@
 #pragma once
-#include <SDL2/SDL.h>
-#include <vector>
 #include <map>
-#include <functional>
 #include <memory>
+#include <SDL2/SDL.h>
 
 namespace lw {
 
-class Window;
+class NativeWindow;
 
 class Application {
 public:
@@ -16,15 +14,18 @@ public:
 
     void run();
 
-    void registerWindow(std::unique_ptr<Window>&& window);
-    void unregisterWindow(Window* window);
+
+    uint32_t CreateWindow(const std::string& title, int width, int height);
 
 private:
     void pollEvents();
-    
+
+    void registerWindow(std::unique_ptr<NativeWindow>&& window);
+    void unregisterWindow(NativeWindow* window);
+
     bool m_running = true;
-    Window* m_mainWindow{nullptr};
-    std::map<uint32_t, std::unique_ptr<Window>> m_windows;
+    NativeWindow* m_mainWindow{nullptr};
+    std::map<uint32_t, std::unique_ptr<NativeWindow>> m_windows;
 
     // Prevent copying
     Application(const Application&) = delete;

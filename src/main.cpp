@@ -1,5 +1,4 @@
 #include "Application.h"
-#include "Window.h"
 #include "Shader.h"
 #include <iostream>
 
@@ -19,8 +18,8 @@ const char* fragmentShaderSource = "#version 330 core\n"
 
 int main(int argc, char* argv[]) {
     lw::Application app;
-    app.registerWindow(lw::Window::create("LightWeightGUI", 800, 600));
-    app.registerWindow(lw::Window::create("LightWeightGUI2", 400, 400));
+    app.CreateWindow("LightWeightGUI", 800, 600);
+    app.CreateWindow("LightWeightGUI2", 400, 400);
     lw::Shader shader(vertexShaderSource, fragmentShaderSource);
 
     app.run();

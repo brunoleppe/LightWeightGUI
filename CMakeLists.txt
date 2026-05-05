@@ -39,8 +39,8 @@ find_package(OpenGL REQUIRED)
 add_executable(LightWeightGUI
     src/main.cpp 
     src/Application.cpp
-    src/Window.cpp 
-    src/Shader.cpp
+        src/Shader.cpp
+        src/IGUIAttachment.h
 )
 target_include_directories(LightWeightGUI PRIVATE include)
 if(WIN32)
