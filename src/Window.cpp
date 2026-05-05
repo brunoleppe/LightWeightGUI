@@ -31,10 +31,22 @@ namespace lw
             return;
         }
 
-        if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
+        if (SDL_GL_MakeCurrent(m_window, m_glContext) < 0)
         {
-            std::cerr << "Failed to initialize GLAD" << std::endl;
+            std::cerr << "OpenGL context could not be made current! SDL_Error: " << SDL_GetError() << std::endl;
             return;
+        }
+
+        static bool gladInitialized = false;
+        if (!gladInitialized)
+        {
+            if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
+            {
+                std::cerr << "Failed to initialize GLAD" << std::endl;
+                return;
+            }
+
+            gladInitialized = true;
         }
     }
 
