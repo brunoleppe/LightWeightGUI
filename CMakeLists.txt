@@ -31,7 +31,13 @@ execute_process(
   WORKING_DIRECTORY ${glad_gen_SOURCE_DIR}
 )
 
-add_library(glad ${CMAKE_BINARY_DIR}/glad/src/glad.c)
+add_library(glad ${CMAKE_BINARY_DIR}/glad/src/glad.c
+        src/ECS/Registry.cpp
+        src/ECS/Registry.h
+        src/GUI/GUIPrimitives.h
+        src/GUI/Widget.h
+        src/GUI/Delegate.h
+        src/ECS/Engine.h)
 target_include_directories(glad PUBLIC ${CMAKE_BINARY_DIR}/glad/include)
 
 find_package(OpenGL REQUIRED)
@@ -39,10 +45,9 @@ find_package(OpenGL REQUIRED)
 add_executable(LightWeightGUI
     src/main.cpp 
     src/Application.cpp
-        src/Shader.cpp
-        src/IGUIAttachment.h
+    src/Shader.cpp
 )
-target_include_directories(LightWeightGUI PRIVATE include)
+target_include_directories(LightWeightGUI PRIVATE src src/ECS src/GUI)
 if(WIN32)
 target_link_libraries(LightWeightGUI PRIVATE
         SDL2::SDL2main

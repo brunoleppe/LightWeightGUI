@@ -2,6 +2,9 @@
 #include "Shader.h"
 #include <iostream>
 
+#include "GUI/Delegate.h"
+#include "GUI/Widget.h"
+
 const char* vertexShaderSource = "#version 330 core\n"
     "layout (location = 0) in vec3 aPos;\n"
     "void main()\n"

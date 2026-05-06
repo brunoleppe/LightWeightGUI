@@ -4,7 +4,6 @@
 #include <SDL2/SDL.h>
 
 namespace lw {
-
 class NativeWindow;
 
 class Application {
@@ -31,5 +30,4 @@ private:
     Application(const Application&) = delete;
     Application& operator=(const Application&) = delete;
 };
-
 } // namespace lw
