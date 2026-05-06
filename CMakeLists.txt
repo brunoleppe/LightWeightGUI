@@ -3,19 +3,28 @@ project(LightWeigthGUI)
 
 set(CMAKE_CXX_STANDARD 20)
 
+# Raylib dependency
 include(FetchContent)
+set(FETCHCONTENT_QUIET OFF)
 FetchContent_Declare(
-  SDL2
-  GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
-  GIT_TAG release-2.30.2  # Using a stable version
+        raylib
+        URL https://github.com/raysan5/raylib/archive/refs/tags/5.0.tar.gz
 )
+set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(raylib)
 
-set(SDL_SHARED ON CACHE BOOL "" FORCE)
-set(SDL_STATIC OFF CACHE BOOL "" FORCE)
+if(EMSCRIPTEN)
+    set(CMAKE_EXECUTABLE_SUFFIX ".html")
+    add_executable(LightWeigthGUI src/main.cpp)
 
-FetchContent_MakeAvailable(SDL2)
+    # Emscripten specific linker flags
+    target_link_options(LightWeigthGUI PRIVATE
+            "-sUSE_GLFW=3"
+            "-sASSERTIONS=1"
+#            "--shell-file=${CMAKE_SOURCE_DIR}/shell.html"
+    )
+else()
+    add_executable(LightWeigthGUI src/main.cpp)
+endif()
 
-add_executable(LightWeigthGUI src/main.cpp)
-
-# SDL2 targets are exported as SDL2::SDL2 (shared) or SDL2::SDL2-static
-target_link_libraries(LightWeigthGUI PRIVATE SDL2::SDL2)
+target_link_libraries(LightWeigthGUI raylib)

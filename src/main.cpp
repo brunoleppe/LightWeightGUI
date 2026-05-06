@@ -1,25 +1,86 @@
-#include <SDL2/SDL.h>
 #include <iostream>
+#include <raylib.h>
+#if defined(PLATFORM_WEB)
+    #include <emscripten/emscripten.h>
+#endif
+
+const int screenWidth = 800;
+const int screenHeight = 450;
+float rotation = 0.0f;
+
+void UpdateFrame()
+{
+    // Update
+        //----------------------------------------------------------------------------------
+        rotation += 0.2f;
+        //----------------------------------------------------------------------------------
+
+        // Draw
+        //----------------------------------------------------------------------------------
+        BeginDrawing();
+
+            ClearBackground(GRAY);
+
+            DrawText("some basic shapes available on raylib", 20, 20, 20, DARKGRAY);
+
+            // Circle shapes and lines
+            DrawCircle(screenWidth/5, 120, 35, DARKBLUE);
+            DrawCircleGradient(screenWidth/5.0f, 220.0f, 60, GREEN, SKYBLUE);
+            DrawCircleLines(screenWidth/5, 340, 80, DARKBLUE);
+            DrawEllipse(screenWidth/5, 120, 25, 20, YELLOW);
+            DrawEllipseLines(screenWidth/5, 120, 30, 25, YELLOW);
+
+            // Rectangle shapes and lines
+            DrawRectangle(screenWidth/4*2 - 60, 100, 120, 60, RED);
+            DrawRectangleGradientH(screenWidth/4*2 - 90, 170, 180, 130, MAROON, GOLD);
+            DrawRectangleLines(screenWidth/4*2 - 40, 320, 80, 60, ORANGE);  // NOTE: Uses QUADS internally, not lines
+
+            // Triangle shapes and lines
+            DrawTriangle((Vector2){ screenWidth/4.0f *3.0f, 80.0f },
+                         (Vector2){ screenWidth/4.0f *3.0f - 60.0f, 150.0f },
+                         (Vector2){ screenWidth/4.0f *3.0f + 60.0f, 150.0f }, VIOLET);
+
+            DrawTriangleLines((Vector2){ screenWidth/4.0f*3.0f, 160.0f },
+                              (Vector2){ screenWidth/4.0f*3.0f - 20.0f, 230.0f },
+                              (Vector2){ screenWidth/4.0f*3.0f + 20.0f, 230.0f }, DARKBLUE);
+
+            // Polygon shapes and lines
+            DrawPoly((Vector2){ screenWidth/4.0f*3, 330 }, 6, 80, rotation, BROWN);
+            DrawPolyLines((Vector2){ screenWidth/4.0f*3, 330 }, 6, 90, rotation, BROWN);
+            DrawPolyLinesEx((Vector2){ screenWidth/4.0f*3, 330 }, 6, 85, rotation, 6, BEIGE);
+
+            // NOTE: We draw all LINES based shapes together to optimize internal drawing,
+            // this way, all LINES are rendered in a single draw pass
+            DrawLine(18, 42, screenWidth - 18, 42, BLACK);
+        EndDrawing();
+        //----------------------------------------------------------------------------------
+}
 
 int main(int argc, char* argv[]) {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
-        return 1;
+
+// Initialization
+    //--------------------------------------------------------------------------------------
+
+
+    SetConfigFlags(FLAG_MSAA_4X_HINT);
+    InitWindow(screenWidth, screenHeight, "raylib [shapes] example - basic shapes");
+
+
+    SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
+    //--------------------------------------------------------------------------------------
+
+#if defined(PLATFORM_WEB)
+    // 0 = browser decides frame rate, true = simulate infinite loop
+    emscripten_set_main_loop(UpdateFrame, 0, 1);
+#else
+    while (!WindowShouldClose()) {
+        UpdateFrame();
     }
+#endif
 
-    SDL_Window* window = SDL_CreateWindow("SDL2 Window",
-                                          SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                          640, 480, SDL_WINDOW_SHOWN);
-
-    if (window == nullptr) {
-        std::cerr << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
-        return 1;
-    }
-
-    SDL_Delay(2000);
-
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-
+    // De-Initialization
+    //--------------------------------------------------------------------------------------
+    CloseWindow();        // Close window and OpenGL context
+    //--------------------------------------------------------------------------------------
     return 0;
 }
