@@ -4,6 +4,7 @@
 
 #ifndef LIGHTWEIGTHGUI_APPLICATION_H
 #define LIGHTWEIGTHGUI_APPLICATION_H
+#include "GUI/InputSystem.h"
 #include "GUI/MainWindow.h"
 
 namespace lw {
@@ -14,7 +15,8 @@ class Application {
     static Application* s_app;
     static void UpdateFrame();
 #endif
-    MainWindow* m_window{nullptr};
+    MainWindow*  m_window{nullptr};
+    InputSystem  m_inputSystem;
 
 public:
     Application(const Application&) = delete;

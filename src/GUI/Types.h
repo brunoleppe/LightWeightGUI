@@ -40,6 +40,13 @@ enum class InteractionState {
     Disabled
 };
 
+struct InputState {
+    int mouseX, mouseY;
+    bool mouseDown;
+    bool mousePressed;
+    bool mouseReleased;
+};
+
 } // namespace lw
 
 #endif // LIGHTWEIGHTGUI_TYPES_H

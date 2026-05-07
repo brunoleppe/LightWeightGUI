@@ -29,6 +29,7 @@ public:
         if (!IsWindowReady()) {
             InitWindow(width, height, title);
         }
+        transform = {0,0,width,height};
     }
     ~MainWindow() override {
         CloseWindow();

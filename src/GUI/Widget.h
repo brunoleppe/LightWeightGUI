@@ -43,9 +43,10 @@ public:
             }
         };
 
-        transform.on_change = trigger_refresh;
+        transform.on_change       = trigger_refresh;
         backgroundColor.on_change = trigger_refresh;
         foregroundColor.on_change = trigger_refresh;
+        interactionState.on_change = trigger_refresh;
     }
 
     ~Widget() override = default;
@@ -83,9 +84,9 @@ public:
         return renderer.get();
     }
 
-    MulticastDelegate<void(Widget*)> onClick;
-    MulticastDelegate<void(Widget*)> onClickDown;
-    MulticastDelegate<void(Widget*)> onClickUp;
+    MulticastDelegate<Widget*> onClick;
+    MulticastDelegate<Widget*> onClickDown;
+    MulticastDelegate<Widget*> onClickUp;
 };
 
 } // namespace lw

@@ -57,7 +57,10 @@ void UpdateFrame() {
 
 int main(int argc, char* argv[]) {
     lw::Application app;
-    app.CreateWindow("LightWeightGUI", screenWidth, screenHeight);
+    lw::MainWindow* w = app.CreateWindow("LightWeightGUI", screenWidth, screenHeight);
+    w->onClick.Bind([](lw::Widget* w) {
+        std::cout << "Widget clicked: " << w << std::endl;
+    });
     app.Run();
     return 0;
 }

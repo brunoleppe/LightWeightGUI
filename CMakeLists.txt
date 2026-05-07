@@ -18,7 +18,12 @@ add_executable(LightWeigthGUI src/main.cpp
         src/Application.h
         src/GUI/Widget.h
         src/GUI/Delegate.h
-        src/GUI/MainWIndow.h)
+        src/GUI/MainWIndow.h
+        src/GUI/Types.h
+        src/GUI/Property.h
+        src/GUI/IRenderer.h
+        src/GUI/InputSystem.h
+        src/GUI/InputSystem.cpp)
 
 if(EMSCRIPTEN)
     set(CMAKE_EXECUTABLE_SUFFIX ".js")
