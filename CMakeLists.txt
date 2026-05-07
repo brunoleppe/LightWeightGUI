@@ -15,7 +15,10 @@ FetchContent_MakeAvailable(raylib)
 
 add_executable(LightWeigthGUI src/main.cpp
         src/Application.cpp
-        src/Application.h)
+        src/Application.h
+        src/GUI/Widget.h
+        src/GUI/Delegate.h
+        src/GUI/MainWIndow.h)
 
 if(EMSCRIPTEN)
     set(CMAKE_EXECUTABLE_SUFFIX ".js")
