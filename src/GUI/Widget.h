@@ -1,85 +1,21 @@
 /**
  * @file Widget.h
- * @author Bruno Leppe 
+ * @author Bruno Leppe
  * @date 7/5/2026
  */
 
-#ifndef LIGHTWEIGTHGUI_WIDGET_H
-#define LIGHTWEIGTHGUI_WIDGET_H
-#include <functional>
+#ifndef LIGHTWEIGHTGUI_WIDGET_H
+#define LIGHTWEIGHTGUI_WIDGET_H
+
 #include <memory>
-#include <optional>
 #include <vector>
 
 #include "Delegate.h"
+#include "IRenderer.h"
+#include "Property.h"
+#include "Types.h"
 
 namespace lw {
-struct Rect {
-    int x, y, width, height;
-
-    bool operator==(const Rect& o) const {
-        return x == o.x && y == o.y && width == o.width && height == o.height;
-    }
-};
-
-struct ColorBase {
-    int r, g, b, a;
-
-    bool operator==(const ColorBase& o) const {
-        return r == o.r && g == o.g && b == o.b && a == o.a;
-    }
-};
-
-using LwColor = std::optional<ColorBase>;
-
-struct Size {
-    int width, height;
-};
-
-struct IRenderer {
-    virtual ~IRenderer() = default;
-    virtual void Refresh() = 0;
-    virtual void Render(const Rect& rect) = 0;
-};
-
-struct IRenderable {
-    virtual ~IRenderable() = default;
-    virtual std::unique_ptr<IRenderer> CreateRenderer() = 0;
-};
-
-enum class InteractionState {
-    Normal,
-    Hovered,
-    Pressed,
-    Disabled
-};
-
-template <typename T>
-struct Property {
-private:
-    T n;
-
-public:
-    std::function<void()> on_change;
-
-    // FIX 3: Initialize memory safely
-    Property(T default_val = T{})
-        : n(default_val) {
-    }
-
-    Property& operator=(const T& n_) {
-        // FIX 4: Only trigger events if the value actually changed
-        if (!(this->n == n_)) {
-            this->n = n_;
-            if (on_change) {
-                on_change();
-            }
-        }
-        return *this;
-    }
-
-    operator T() const { return n; }
-};
 
 class Widget : public IRenderable {
     std::vector<std::unique_ptr<Widget>> children;
@@ -89,7 +25,6 @@ protected:
     std::unique_ptr<IRenderer> renderer;
 
 public:
-    // Declare properties
     Property<Rect> transform{};
     Property<LwColor> backgroundColor{};
     Property<LwColor> foregroundColor{};
@@ -113,9 +48,9 @@ public:
         foregroundColor.on_change = trigger_refresh;
     }
 
-    virtual ~Widget() = default;
+    ~Widget() override = default;
 
-    const std::vector<std::unique_ptr<Widget>>& GetChildren() const {
+    [[nodiscard]] const std::vector<std::unique_ptr<Widget>>& GetChildren() const {
         return children;
     }
 
@@ -152,6 +87,7 @@ public:
     MulticastDelegate<void(Widget*)> onClickDown;
     MulticastDelegate<void(Widget*)> onClickUp;
 };
+
 } // namespace lw
 
-#endif //LIGHTWEIGTHGUI_WIDGET_H
+#endif // LIGHTWEIGHTGUI_WIDGET_H
