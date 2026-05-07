@@ -1,11 +1,11 @@
 #include <iostream>
 #include <raylib.h>
-#if defined(PLATFORM_WEB)
-    #include <emscripten/emscripten.h>
-#endif
 
-const int screenWidth = 800;
-const int screenHeight = 450;
+#include "Application.h"
+
+
+constexpr int screenWidth = 800;
+constexpr int screenHeight = 450;
 float rotation = 0.0f;
 
 void UpdateFrame()
@@ -57,30 +57,8 @@ void UpdateFrame()
 }
 
 int main(int argc, char* argv[]) {
-
-// Initialization
-    //--------------------------------------------------------------------------------------
-
-
-    SetConfigFlags(FLAG_MSAA_4X_HINT);
-    InitWindow(screenWidth, screenHeight, "raylib [shapes] example - basic shapes");
-
-
-    SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
-
-#if defined(PLATFORM_WEB)
-    // 0 = browser decides frame rate, true = simulate infinite loop
-    emscripten_set_main_loop(UpdateFrame, 0, 1);
-#else
-    while (!WindowShouldClose()) {
-        UpdateFrame();
-    }
-#endif
-
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
-    CloseWindow();        // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
+    lw::Application app;
+    app.CreateWindow("LightWeightGUI", screenWidth, screenHeight, false);
+    app.Run();
     return 0;
 }

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Embedded GUI</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #1a1a1a;
+            color: #eee;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            overflow: hidden; /* Prevents scrollbars on the main window */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* The Canvas where the GUI is rendered */
+        #canvas {
+            border: 0 none;
+            background-color: black;
+            display: block;
+            outline: none;
+        }
+
+        /* Loading Spinner */
+        #status {
+            position: absolute;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div id="status">Downloading...</div>
+
+<canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
+
+<script type='text/javascript'>
+    var statusElement = document.getElementById('status');
+
+    var Module = {
+        preRun: [],
+        postRun: [],
+        print: (function() {
+            return function(text) {
+                if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+                console.log(text);
+            };
+        })(),
+        canvas: (function() {
+            var canvas = document.getElementById('canvas');
+            // Handle context lost events
+            canvas.addEventListener("webglcontextlost", function(e) {
+                alert('WebGL context lost. You will need to reload the page.');
+                e.preventDefault();
+            }, false);
+            return canvas;
+        })(),
+        setStatus: function(text) {
+            if (!Module.setStatus.last) Module.setStatus.last = { time: Date.now(), text: '' };
+            if (text === Module.setStatus.last.text) return;
+            statusElement.innerHTML = text;
+            if (text) {
+                statusElement.style.display = 'block';
+            } else {
+                statusElement.style.display = 'none';
+            }
+        },
+        totalDependencies: 0,
+        monitorRunDependencies: function(left) {
+            this.totalDependencies = Math.max(this.totalDependencies, left);
+            Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : '');
+        }
+    };
+
+    Module.setStatus('Downloading...');
+    window.onerror = function() {
+        Module.setStatus('Exception thrown, see JavaScript console');
+        Module.setStatus = function(text) {
+            if (text) console.error('[post-exception status] ' + text);
+        };
+    };
+</script>
+{{{ SCRIPT }}}
+</body>
+</html>
