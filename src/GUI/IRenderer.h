@@ -15,7 +15,6 @@ namespace lw {
 
 struct IRenderer {
     virtual ~IRenderer() = default;
-    virtual void Refresh() = 0;
     virtual void Render(const Rect& rect) = 0;
 };
 

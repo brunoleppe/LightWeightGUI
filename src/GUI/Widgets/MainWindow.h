@@ -21,7 +21,6 @@ public:
         : m_window(window) {
     }
 
-    void Refresh() override;
     void Render(const Rect& rect) override;
 };
 
@@ -45,13 +44,10 @@ public:
     }
 };
 
-inline void MainWindowRenderer::Refresh() {
-    //nothing to do here.
-}
+
 
 inline void MainWindowRenderer::Render(const Rect& rect) {
     ClearBackground(GRAY);
-    ClippingScope clip(rect);
     for (auto& widget : m_window->GetChildren()) {
         if (widget->visible) {
             widget->GetRenderer()->Render(m_window->transform);

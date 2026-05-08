@@ -20,7 +20,6 @@ public:
         : m_panel(panel) {
     }
 
-    void Refresh() override;
     void Render(const Rect& rect) override;
 };
 
@@ -32,8 +31,6 @@ public:
     }
 };
 
-inline void PanelRenderer::Refresh() {
-}
 
 inline void PanelRenderer::Render(const Rect& rect) {
     Rect requested{rect.x + m_panel->transform->x, rect.y + m_panel->transform->y, m_panel->transform->width,

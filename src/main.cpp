@@ -2,6 +2,8 @@
 #include <raylib.h>
 
 #include "Application.h"
+#include "Layout.h"
+#include "LayoutPanel.h"
 #include "GUI/Widgets/Panel.h"
 
 constexpr int screenWidth = 800;
@@ -59,7 +61,7 @@ void UpdateFrame() {
 int main(int argc, char* argv[]) {
     lw::Application app;
     lw::MainWindow* w = app.CreateWindow("LightWeightGUI", 600, 450);
-    auto* p1 = static_cast<lw::Panel*>(w->AddWidget(std::make_unique<lw::Panel>()));
+    auto* p1 = static_cast<lw::LayoutPanel*>(w->AddWidget(std::make_unique<lw::LayoutPanel>()));
     auto* p2 = static_cast<lw::Panel*>(w->AddWidget(std::make_unique<lw::Panel>()));
     auto* p3 = static_cast<lw::Panel*>(w->AddWidget(std::make_unique<lw::Panel>()));
     p1->transform = {0,0,200,450};
@@ -69,9 +71,17 @@ int main(int argc, char* argv[]) {
     p3->transform = {400,0,200,450};
     p3->backgroundColor = {BLUE};
 
+
     auto* p4 = static_cast<lw::Panel*>(p1->AddWidget(std::make_unique<lw::Panel>()));
-    p4->transform = {100,100,200,200};
     p4->backgroundColor = {YELLOW};
+    auto* p5 = static_cast<lw::Panel*>(p1->AddWidget(std::make_unique<lw::Panel>()));
+    p5->backgroundColor = {YELLOW};
+    auto* p6 = static_cast<lw::Panel*>(p1->AddWidget(std::make_unique<lw::Panel>()));
+    p6->backgroundColor = {YELLOW};
+
+    p4->onClick.Bind([&p6](lw::Widget* w) {
+        p6->visible = !p6->visible;
+    });
 
     w->onClick.Bind([](lw::Widget* w) {
         std::cout << "Widget clicked: " << w << std::endl;

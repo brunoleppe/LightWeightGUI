@@ -21,7 +21,13 @@ add_executable(LightWeightGUI src/main.cpp
         src/GUI/InputSystem.h
         src/GUI/InputSystem.cpp
         src/GUI/Widgets/Panel.h
-        src/GUI/ClippingStack.h)
+        src/GUI/ClippingStack.h
+        src/GUI/Layout.h
+        src/GUI/Layout.cpp
+        src/GUI/Widgets/LayoutPanel.h
+        src/GUI/ILayout.h
+        src/GUI/Renderer.cpp
+        src/GUI/Renderer.h)
 
 if(EMSCRIPTEN)
     set(CMAKE_EXECUTABLE_SUFFIX ".html")

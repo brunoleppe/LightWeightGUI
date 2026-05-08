@@ -58,6 +58,9 @@ void Application::Update(){
         IsMouseButtonPressed(MOUSE_BUTTON_LEFT),
         IsMouseButtonReleased(MOUSE_BUTTON_LEFT)
     };
+
+    m_layoutSubsystem.Layout(m_window);
+
     m_inputSystem.Process(m_window, input);
 
     BeginDrawing();

@@ -14,7 +14,7 @@ class ClippingStack {
     static inline std::stack<Rect> s_stack;
 
 public:
-    static void ClipRect(const Rect& rect) {
+    static void Push(const Rect& rect) {
         Rect activeRect = rect;
 
         if (!s_stack.empty()) {
@@ -36,7 +36,7 @@ public:
                          activeRect.width, activeRect.height);
     }
 
-    static void EndClip() {
+    static void Pop() {
         if (s_stack.empty()) {
             EndScissorMode();
             return;
@@ -61,12 +61,12 @@ public:
 struct ClippingScope {
     // Constructor performs the Push
     explicit ClippingScope(Rect requestedRect) {
-        ClippingStack::ClipRect(requestedRect);
+        ClippingStack::Push(requestedRect);
     }
 
     // Destructor performs the Pop automatically
     ~ClippingScope() {
-        ClippingStack::EndClip();
+        ClippingStack::Pop();
     }
 
     // Prevent copying to ensure one Pop per Push

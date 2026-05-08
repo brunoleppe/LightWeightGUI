@@ -8,15 +8,14 @@
 #include "MainWindow.h"
 
 namespace lw {
-
-
 class Application {
 #if defined(PLATFORM_WEB)
     static Application* s_app;
     static void UpdateFrame();
 #endif
-    MainWindow*  m_window{nullptr};
-    InputSystem  m_inputSystem;
+    MainWindow* m_window{nullptr};
+    InputSystem m_inputSystem;
+    LayoutSubsystem m_layoutSubsystem;
 
     void Update();
 
