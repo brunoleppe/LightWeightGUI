@@ -79,8 +79,9 @@ int main(int argc, char* argv[]) {
     auto* p6 = static_cast<lw::Panel*>(p1->AddWidget(std::make_unique<lw::Panel>()));
     p6->backgroundColor = {YELLOW};
 
-    p4->onClick.Bind([&p6](lw::Widget* w) {
+    p4->onClick.Bind([&p6, &p2](lw::Widget* w) {
         p6->visible = !p6->visible;
+        p2->backgroundColor = lw::LwColor::GetRandomColor();
     });
 
     w->onClick.Bind([](lw::Widget* w) {

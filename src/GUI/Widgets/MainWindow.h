@@ -46,13 +46,9 @@ public:
 
 
 
-inline void MainWindowRenderer::Render(const Rect& rect) {
+inline void MainWindowRenderer::Render(const Rect& /*parentAbsRect*/) {
     ClearBackground(GRAY);
-    for (auto& widget : m_window->GetChildren()) {
-        if (widget->visible) {
-            widget->GetRenderer()->Render(m_window->transform);
-        }
-    }
+    // RenderSubsystem handles children traversal and clipping.
 }
 } // lw
 

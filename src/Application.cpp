@@ -64,7 +64,8 @@ void Application::Update(){
     m_inputSystem.Process(m_window, input);
 
     BeginDrawing();
-    m_window->GetRenderer()->Render({0, 0, GetScreenWidth(), GetScreenHeight()});
+    m_renderSubsystem.Render(m_window, {0,0,GetScreenWidth(),GetScreenHeight()});
+    // m_window->GetRenderer()->Render({0, 0, GetScreenWidth(), GetScreenHeight()});
     DrawText(TextFormat("Mouse X: %d\nMouse Y: %d", input.mouseX, input.mouseY), 10, 10, 20, BLACK);
     EndDrawing();
 }

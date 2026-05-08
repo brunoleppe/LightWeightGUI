@@ -6,6 +6,7 @@
 #define LIGHTWEIGTHGUI_APPLICATION_H
 #include "InputSystem.h"
 #include "MainWindow.h"
+#include "Renderer.h"
 
 namespace lw {
 class Application {
@@ -16,6 +17,7 @@ class Application {
     MainWindow* m_window{nullptr};
     InputSystem m_inputSystem;
     LayoutSubsystem m_layoutSubsystem;
+    RenderSubsystem m_renderSubsystem;
 
     void Update();
 

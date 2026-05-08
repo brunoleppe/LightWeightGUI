@@ -35,7 +35,9 @@ public:
         BeginScissorMode(activeRect.x, activeRect.y,
                          activeRect.width, activeRect.height);
     }
-
+    static const Rect& Peek() {
+        return s_stack.top();
+    }
     static void Pop() {
         if (s_stack.empty()) {
             EndScissorMode();

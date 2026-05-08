@@ -6,7 +6,6 @@
 
 #ifndef LIGHTWEIGTHGUI_PANEL_H
 #define LIGHTWEIGTHGUI_PANEL_H
-#include "ClippingStack.h"
 #include "Widget.h"
 
 namespace lw {
@@ -32,16 +31,15 @@ public:
 };
 
 
-inline void PanelRenderer::Render(const Rect& rect) {
-    Rect requested{rect.x + m_panel->transform->x, rect.y + m_panel->transform->y, m_panel->transform->width,
-                       m_panel->transform->height};
-    ClippingScope clip(requested);
-    DrawRectangle(requested.x, requested.y, requested.width, requested.height, m_panel->backgroundColor);
-    for (auto& widget : m_panel->GetChildren()) {
-        if (widget->visible) {
-            widget->GetRenderer()->Render(m_panel->transform);
-        }
-    }
+inline void PanelRenderer::Render(const Rect& parentAbsRect) {
+    Rect myRect {
+        parentAbsRect.x + m_panel->transform->x,
+        parentAbsRect.y + m_panel->transform->y,
+        m_panel->transform->width,
+        m_panel->transform->height
+    };
+    DrawRectangle(myRect.x, myRect.y, myRect.width, myRect.height, m_panel->backgroundColor);
+    // RenderSubsystem handles children traversal and clipping.
 }
 } // llw
 
