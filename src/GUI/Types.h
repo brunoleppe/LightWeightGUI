@@ -7,8 +7,6 @@
 #ifndef LIGHTWEIGHTGUI_TYPES_H
 #define LIGHTWEIGHTGUI_TYPES_H
 
-#include <optional>
-
 #include "raylib.h"
 
 namespace lw {

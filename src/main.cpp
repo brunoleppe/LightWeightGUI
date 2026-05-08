@@ -2,7 +2,7 @@
 #include <raylib.h>
 
 #include "Application.h"
-#include "GUI/Panel.h"
+#include "GUI/Widgets/Panel.h"
 
 constexpr int screenWidth = 800;
 constexpr int screenHeight = 450;

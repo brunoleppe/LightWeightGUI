@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 # Raylib dependency (git submodule at external/raylib, pinned to 5.0)
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(BUILD_GAMES    OFF CACHE BOOL "" FORCE)
+
 add_subdirectory(external/raylib)
 
 add_executable(LightWeightGUI src/main.cpp
@@ -13,13 +14,13 @@ add_executable(LightWeightGUI src/main.cpp
         src/Application.h
         src/GUI/Widget.h
         src/GUI/Delegate.h
-        src/GUI/MainWindow.h
+        src/GUI/Widgets/MainWindow.h
         src/GUI/Types.h
         src/GUI/Property.h
         src/GUI/IRenderer.h
         src/GUI/InputSystem.h
         src/GUI/InputSystem.cpp
-        src/GUI/Panel.h
+        src/GUI/Widgets/Panel.h
         src/GUI/ClippingStack.h)
 
 if(EMSCRIPTEN)
@@ -36,3 +37,4 @@ if(EMSCRIPTEN)
 endif()
 
 target_link_libraries(LightWeightGUI raylib)
+target_include_directories(LightWeightGUI PRIVATE src src/GUI src/GUI/Widgets)

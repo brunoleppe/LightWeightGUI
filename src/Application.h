@@ -4,8 +4,8 @@
 
 #ifndef LIGHTWEIGTHGUI_APPLICATION_H
 #define LIGHTWEIGTHGUI_APPLICATION_H
-#include "GUI/InputSystem.h"
-#include "GUI/MainWindow.h"
+#include "InputSystem.h"
+#include "MainWindow.h"
 
 namespace lw {
 
