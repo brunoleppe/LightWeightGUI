@@ -16,18 +16,7 @@ Application* Application::s_app{nullptr};
 
 void Application::UpdateFrame() {
     if (s_app && s_app->m_window) {
-        Vector2 mousePos = GetMousePosition();
-        InputState input{
-            static_cast<int>(mousePos.x), static_cast<int>(mousePos.y),
-            IsMouseButtonDown(MOUSE_BUTTON_LEFT),
-            IsMouseButtonPressed(MOUSE_BUTTON_LEFT),
-            IsMouseButtonReleased(MOUSE_BUTTON_LEFT)
-        };
-        s_app->m_inputSystem.Process(s_app->m_window, input);
-
-        BeginDrawing();
-        s_app->m_window->GetRenderer()->Render({0, 0, GetScreenWidth(), GetScreenHeight()});
-        EndDrawing();
+        s_app->Update();
     }
 }
 #endif
@@ -55,21 +44,26 @@ void Application::Run() {
         emscripten_set_main_loop(UpdateFrame, 0, 1);
 #else
         while (!WindowShouldClose()) {
-            Vector2 mousePos = GetMousePosition();
-            InputState input{
-                static_cast<int>(mousePos.x), static_cast<int>(mousePos.y),
-                IsMouseButtonDown(MOUSE_BUTTON_LEFT),
-                IsMouseButtonPressed(MOUSE_BUTTON_LEFT),
-                IsMouseButtonReleased(MOUSE_BUTTON_LEFT)
-            };
-            m_inputSystem.Process(m_window, input);
-
-            BeginDrawing();
-            m_window->GetRenderer()->Render({0, 0, GetScreenWidth(), GetScreenHeight()});
-            DrawText(TextFormat("Mouse X: %d\nMouse Y: %d", input.mouseX, input.mouseY), 10, 10, 20, BLACK);
-            EndDrawing();
+            Update();
         }
 #endif
     }
 }
+
+void Application::Update(){
+    Vector2 mousePos = GetMousePosition();
+    InputState input{
+        static_cast<int>(mousePos.x), static_cast<int>(mousePos.y),
+        IsMouseButtonDown(MOUSE_BUTTON_LEFT),
+        IsMouseButtonPressed(MOUSE_BUTTON_LEFT),
+        IsMouseButtonReleased(MOUSE_BUTTON_LEFT)
+    };
+    m_inputSystem.Process(m_window, input);
+
+    BeginDrawing();
+    m_window->GetRenderer()->Render({0, 0, GetScreenWidth(), GetScreenHeight()});
+    DrawText(TextFormat("Mouse X: %d\nMouse Y: %d", input.mouseX, input.mouseY), 10, 10, 20, BLACK);
+    EndDrawing();
+}
+
 } // lw

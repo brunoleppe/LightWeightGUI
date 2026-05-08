@@ -18,6 +18,8 @@ class Application {
     MainWindow*  m_window{nullptr};
     InputSystem  m_inputSystem;
 
+    void Update();
+
 public:
     Application(const Application&) = delete;
     Application& operator=(const Application&) = delete;

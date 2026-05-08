@@ -53,6 +53,7 @@ void UpdateFrame() {
     DrawLine(18, 42, screenWidth - 18, 42, BLACK);
     EndDrawing();
     //----------------------------------------------------------------------------------
+
 }
 
 int main(int argc, char* argv[]) {
