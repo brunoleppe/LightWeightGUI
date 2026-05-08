@@ -65,8 +65,8 @@ void Application::Run() {
             m_inputSystem.Process(m_window, input);
 
             BeginDrawing();
-            DrawText(TextFormat("Mouse X: %d\nMouse Y: %d", input.mouseX, input.mouseY), 10, 10, 20, BLACK);
             m_window->GetRenderer()->Render({0, 0, GetScreenWidth(), GetScreenHeight()});
+            DrawText(TextFormat("Mouse X: %d\nMouse Y: %d", input.mouseX, input.mouseY), 10, 10, 20, BLACK);
             EndDrawing();
         }
 #endif
