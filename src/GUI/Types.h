@@ -7,6 +7,8 @@
 #ifndef LIGHTWEIGHTGUI_TYPES_H
 #define LIGHTWEIGHTGUI_TYPES_H
 
+#include <cstdlib>
+
 #include "raylib.h"
 
 namespace lw {
@@ -38,6 +40,22 @@ struct LwColor : Color{
 
     bool operator==(const LwColor& o) const {
         return r == o.r && g == o.g && b == o.b && a == o.a;
+    }
+
+
+    static LwColor GetRandomColor()
+    {
+        LwColor c;
+        c.r = GetRandomValue(0, 255);
+        c.g = GetRandomValue(0, 255);
+        c.b = GetRandomValue(0, 255);
+        c.a = 255;
+        return c;
+    }
+private:
+    static int GetRandomValue(int min, int max)
+    {
+       return (rand() % (max - min + 1)) + min;
     }
 };
 
