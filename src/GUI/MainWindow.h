@@ -6,17 +6,21 @@
 
 #ifndef LIGHTWEIGTHGUI_MAINWINDOW_H
 #define LIGHTWEIGTHGUI_MAINWINDOW_H
+#include "ClippingStack.h"
 #include "Widget.h"
 #include "raylib.h"
 
 namespace lw {
-
 class MainWindow;
 
 class MainWindowRenderer : public IRenderer {
     MainWindow* m_window;
+
 public:
-    MainWindowRenderer(MainWindow* window) : m_window(window) {}
+    MainWindowRenderer(MainWindow* window)
+        : m_window(window) {
+    }
+
     void Refresh() override;
     void Render(const Rect& rect) override;
 };
@@ -29,8 +33,9 @@ public:
         if (!IsWindowReady()) {
             InitWindow(width, height, title);
         }
-        transform = {0,0,width,height};
+        transform = {0, 0, width, height};
     }
+
     ~MainWindow() override {
         CloseWindow();
     }
@@ -41,14 +46,15 @@ public:
 };
 
 inline void MainWindowRenderer::Refresh() {
-    //TODO
+    //nothing to do here.
 }
 
 inline void MainWindowRenderer::Render(const Rect& rect) {
     ClearBackground(GRAY);
+    ClippingScope clip(rect);
     for (auto& widget : m_window->GetChildren()) {
         if (widget->visible) {
-            widget->GetRenderer()->Render(rect);
+            widget->GetRenderer()->Render(m_window->transform);
         }
     }
 }

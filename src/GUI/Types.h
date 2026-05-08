@@ -9,6 +9,8 @@
 
 #include <optional>
 
+#include "raylib.h"
+
 namespace lw {
 
 struct Rect {
@@ -19,15 +21,28 @@ struct Rect {
     }
 };
 
-struct ColorBase {
-    int r, g, b, a;
+struct LwColor : Color{
 
-    bool operator==(const ColorBase& o) const {
+    LwColor& operator=(const Color& c) {
+        r = c.r;
+        g = c.g;
+        b = c.b;
+        a = c.a;
+        return *this;
+    }
+    LwColor& operator=(const LwColor& c) {
+        r = c.r;
+        g = c.g;
+        b = c.b;
+        a = c.a;
+        return *this;
+    }
+
+    bool operator==(const LwColor& o) const {
         return r == o.r && g == o.g && b == o.b && a == o.a;
     }
 };
 
-using LwColor = std::optional<ColorBase>;
 
 struct Size {
     int width, height;

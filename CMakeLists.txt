@@ -13,23 +13,25 @@ FetchContent_Declare(
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(raylib)
 
-add_executable(LightWeigthGUI src/main.cpp
+add_executable(LightWeightGUI src/main.cpp
         src/Application.cpp
         src/Application.h
         src/GUI/Widget.h
         src/GUI/Delegate.h
-        src/GUI/MainWIndow.h
+        src/GUI/MainWindow.h
         src/GUI/Types.h
         src/GUI/Property.h
         src/GUI/IRenderer.h
         src/GUI/InputSystem.h
-        src/GUI/InputSystem.cpp)
+        src/GUI/InputSystem.cpp
+        src/GUI/Panel.h
+        src/GUI/ClippingStack.h)
 
 if(EMSCRIPTEN)
     set(CMAKE_EXECUTABLE_SUFFIX ".js")
 
     # Emscripten specific linker flags
-    target_link_options(LightWeigthGUI PRIVATE
+    target_link_options(LightWeightGUI PRIVATE
             "-sUSE_GLFW=3"           # Use the Emscripten-ported GLFW
             "-sASSERTIONS=1"         # Great for debugging GUI memory issues
             "-sALLOW_MEMORY_GROWTH=1" # Essential for retained-mode GUI growth
@@ -37,4 +39,4 @@ if(EMSCRIPTEN)
 
 endif()
 
-target_link_libraries(LightWeigthGUI raylib)
+target_link_libraries(LightWeightGUI raylib)

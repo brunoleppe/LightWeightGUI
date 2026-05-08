@@ -2,7 +2,7 @@
 #include <raylib.h>
 
 #include "Application.h"
-
+#include "GUI/Panel.h"
 
 constexpr int screenWidth = 800;
 constexpr int screenHeight = 450;
@@ -57,7 +57,21 @@ void UpdateFrame() {
 
 int main(int argc, char* argv[]) {
     lw::Application app;
-    lw::MainWindow* w = app.CreateWindow("LightWeightGUI", screenWidth, screenHeight);
+    lw::MainWindow* w = app.CreateWindow("LightWeightGUI", 600, 450);
+    auto* p1 = static_cast<lw::Panel*>(w->AddWidget(std::make_unique<lw::Panel>()));
+    auto* p2 = static_cast<lw::Panel*>(w->AddWidget(std::make_unique<lw::Panel>()));
+    auto* p3 = static_cast<lw::Panel*>(w->AddWidget(std::make_unique<lw::Panel>()));
+    p1->transform = {0,0,200,450};
+    p1->backgroundColor = {RED};
+    p2->transform = {200,0,200,450};
+    p2->backgroundColor = {GREEN};
+    p3->transform = {400,0,200,450};
+    p3->backgroundColor = {BLUE};
+
+    auto* p4 = static_cast<lw::Panel*>(p1->AddWidget(std::make_unique<lw::Panel>()));
+    p4->transform = {100,100,200,200};
+    p4->backgroundColor = {YELLOW};
+
     w->onClick.Bind([](lw::Widget* w) {
         std::cout << "Widget clicked: " << w << std::endl;
     });

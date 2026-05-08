@@ -10,7 +10,6 @@
 #include <functional>
 
 namespace lw {
-
 template <typename T>
 struct Property {
 private:
@@ -20,7 +19,8 @@ public:
     std::function<void()> on_change;
 
     Property(T default_val = T{})
-        : n(default_val) {}
+        : n(default_val) {
+    }
 
     Property& operator=(const T& n_) {
         if (!(this->n == n_)) {
@@ -32,9 +32,12 @@ public:
         return *this;
     }
 
+    T* operator ->() {
+        return &n;
+    }
+
     operator T() const { return n; }
 };
-
 } // namespace lw
 
 #endif // LIGHTWEIGHTGUI_PROPERTY_H
