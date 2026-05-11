@@ -4,7 +4,9 @@
 
 #ifndef LIGHTWEIGHTGUI_DELEGATE_H
 #define LIGHTWEIGHTGUI_DELEGATE_H
+#include <atomic>
 #include <functional>
+#include <list>
 #include <memory>
 #include <vector>
 
@@ -74,11 +76,20 @@ public:
         return Execute(args...);
     }
 
-    Ret Execute(Args... args) {
+    Ret Execute(Args... args) const {
         if (m_handler) {
             return m_handler->operator()(args...);
         }
-        return Ret();
+        
+        if constexpr (std::is_void_v<Ret>) {
+            return;
+        } else {
+            return Ret();
+        }
+    }
+
+    void Clear() {
+        m_handler.reset();
     }
 
     void Bind(void (*func)(Args...)) {
@@ -98,32 +109,54 @@ public:
 
 template <typename... Args>
 class MulticastDelegate {
-    std::vector<std::unique_ptr<IDelegateHandler<void, Args...>>> m_handlers;
-
 public:
+    using HandlerList = std::list<std::unique_ptr<IDelegateHandler<void, Args...>>>;
+    using Token = typename HandlerList::iterator;
+
     void operator()(Args... args) {
         Broadcast(args...);
     }
 
     void Broadcast(Args... args) {
+        m_isBroadcasting = true;
+
         for (const auto& handler : m_handlers) {
-            handler->operator()(args...);
+            if (handler) {
+                handler->operator()(args...);
+            }
+        }
+        m_isBroadcasting = false;
+        m_handlers.remove_if([](const auto& ptr) { return ptr == nullptr; });
+    }
+
+    void Unbind(Token token) {
+        if (m_isBroadcasting) {
+            token->reset();
+        } else {
+            m_handlers.erase(token);
         }
     }
 
-    void Bind(void (*func)(Args...)) {
+    Token Bind(void (*func)(Args...)) {
         m_handlers.push_back(std::make_unique<StaticDelegate<void, Args...>>(func));
+        return m_handlers.back();
     }
 
     template <typename T>
-    void Bind(T* obj, void (T::*method)(Args...)) {
+    Token Bind(T* obj, void (T::*method)(Args...)) {
         m_handlers.push_back(std::make_unique<MethodDelegate<T, void, Args...>>(obj, method));
+        return m_handlers.back();
     }
 
     template <typename F>
-    void Bind(F&& lambda) {
+    Token Bind(F&& lambda) {
         m_handlers.push_back(std::make_unique<FunctorDelegate<F, void, Args...>>(std::forward<F>(lambda)));
+        return m_handlers.back();
     }
+
+private:
+    std::atomic<bool> m_isBroadcasting = false; // Guard flag
+    HandlerList m_handlers;
 };
 } // lw
 
