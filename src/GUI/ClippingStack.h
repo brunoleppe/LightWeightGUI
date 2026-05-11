@@ -58,6 +58,14 @@ public:
         if (s_stack.empty()) return true;
         return (s_stack.top().width > 0 && s_stack.top().height > 0);
     }
+
+    static bool Intersects(const Rect& rect) {
+        if (s_stack.empty()) return true;
+        const Rect& top = s_stack.top();
+        int nw = std::min(rect.x + rect.width,  top.x + top.width)  - std::max(rect.x, top.x);
+        int nh = std::min(rect.y + rect.height, top.y + top.height) - std::max(rect.y, top.y);
+        return nw > 0 && nh > 0;
+    }
 };
 
 struct ClippingScope {

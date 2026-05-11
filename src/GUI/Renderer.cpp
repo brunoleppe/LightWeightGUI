@@ -56,14 +56,16 @@ void RenderSubsystem::Render(Widget* root, const Rect& rect) {
                 widget->transform->height
             };
 
+            if (!ClippingStack::Intersects(widgetAbs)) continue;
+
+            ClippingStack::Push(widgetAbs);
+
             stack.push({widget, {}, true});
 
             const auto& children = widget->GetChildren();
             for (const auto& child : std::ranges::reverse_view(children)) {
                 stack.push({child.get(), widgetAbs, false});
             }
-
-            ClippingStack::Push(widgetAbs);
 
             if (widget->needsRedraw) {
                 for (auto& child : widget->GetChildren())
