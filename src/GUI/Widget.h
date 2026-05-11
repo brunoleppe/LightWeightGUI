@@ -24,6 +24,7 @@ class Widget : public IRenderable, public ILayoutable {
 
     void Redraw() {
         needsRedraw = true;
+        anyDirty = true;
     }
 
     void Refresh() {
@@ -45,6 +46,8 @@ public:
     Property<InteractionState> interactionState{InteractionState::Normal};
     Property<bool> visible{true};
     Property<bool> enabled{true};
+
+    inline static bool anyDirty{true};
 
     bool focused{false};
     bool needsRedraw{true};

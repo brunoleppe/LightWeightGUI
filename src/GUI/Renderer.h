@@ -9,6 +9,7 @@
 #include <stack>
 
 #include "Types.h"
+#include "raylib.h"
 
 namespace lw {
 class Widget;
@@ -20,7 +21,11 @@ class RenderSubsystem {
         bool isExitNode;    // true if we only need to pop the clipping stack
     };
 
+    RenderTexture2D m_composite{};
+    bool m_initialized{false};
+
 public:
+    ~RenderSubsystem();
     void Render(Widget* root, const Rect& rect);
 };
 
