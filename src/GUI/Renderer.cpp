@@ -32,6 +32,7 @@ void RenderSubsystem::Render(Widget* root, const Rect& rect) {
     // Rebuild composite only when something changed
     if (Widget::anyDirty) {
         BeginTextureMode(m_composite);
+        ClearBackground(BLANK);
 
         std::stack<RenderTask> stack;
         ClippingStack::Push(rect);
@@ -49,6 +50,7 @@ void RenderSubsystem::Render(Widget* root, const Rect& rect) {
             Widget* widget = task.widget;
             if (!widget->visible) continue;
 
+            // Calculate absolute position once
             Rect widgetAbs {
                 task.parentAbsRect.x + widget->transform->x,
                 task.parentAbsRect.y + widget->transform->y,
@@ -56,29 +58,19 @@ void RenderSubsystem::Render(Widget* root, const Rect& rect) {
                 widget->transform->height
             };
 
+            // Viewport Culling
             if (!ClippingStack::Intersects(widgetAbs)) continue;
 
             ClippingStack::Push(widgetAbs);
+            stack.push({widget, {}, true}); // Push exit node
 
-            stack.push({widget, {}, true});
-
+            // Push children in reverse for correct Z-order
             const auto& children = widget->GetChildren();
             for (const auto& child : std::ranges::reverse_view(children)) {
                 stack.push({child.get(), widgetAbs, false});
             }
 
-            if (widget->needsRedraw) {
-                for (auto& child : widget->GetChildren())
-                    child->needsRedraw = true;
-                Rect relRect {
-                    task.parentAbsRect.x + widget->transform->x,
-                    task.parentAbsRect.y + widget->transform->y,
-                    widget->transform->width,
-                    widget->transform->height
-                };
-                widget->GetRenderer()->Render(relRect);
-                widget->needsRedraw = false;
-            }
+            widget->GetRenderer()->Render(widgetAbs);
         }
 
         ClippingStack::Pop();
