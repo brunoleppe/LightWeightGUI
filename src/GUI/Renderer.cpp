@@ -57,7 +57,13 @@ void RenderSubsystem::Render(Widget* root, const Rect& rect) {
         // Pass the parent's absolute rect so the renderer can recompute its own
         // absolute position the same way: parentAbs + transform.
         if (widget->needsRedraw) {
-            widget->GetRenderer()->Render(task.parentAbsRect);
+            Rect relRect {
+                task.parentAbsRect.x + widget->transform->x,
+                task.parentAbsRect.y + widget->transform->y,
+                widget->transform->width,
+                widget->transform->height
+            };
+            widget->GetRenderer()->Render(relRect);
             widget->needsRedraw = false;
         }
     }

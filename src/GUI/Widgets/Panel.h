@@ -31,15 +31,8 @@ public:
 };
 
 
-inline void PanelRenderer::Render(const Rect& parentAbsRect) {
-    Rect myRect {
-        parentAbsRect.x + m_panel->transform->x,
-        parentAbsRect.y + m_panel->transform->y,
-        m_panel->transform->width,
-        m_panel->transform->height
-    };
-    DrawRectangle(myRect.x, myRect.y, myRect.width, myRect.height, m_panel->backgroundColor);
-    // RenderSubsystem handles children traversal and clipping.
+inline void PanelRenderer::Render(const Rect& rect) {
+    DrawRectangle(rect.x, rect.y, rect.width, rect.height, m_panel->backgroundColor);
 }
 } // llw
 

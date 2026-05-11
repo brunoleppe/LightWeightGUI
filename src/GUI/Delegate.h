@@ -139,19 +139,19 @@ public:
 
     Token Bind(void (*func)(Args...)) {
         m_handlers.push_back(std::make_unique<StaticDelegate<void, Args...>>(func));
-        return m_handlers.back();
+        return m_handlers.end();
     }
 
     template <typename T>
     Token Bind(T* obj, void (T::*method)(Args...)) {
         m_handlers.push_back(std::make_unique<MethodDelegate<T, void, Args...>>(obj, method));
-        return m_handlers.back();
+        return m_handlers.end();
     }
 
     template <typename F>
     Token Bind(F&& lambda) {
         m_handlers.push_back(std::make_unique<FunctorDelegate<F, void, Args...>>(std::forward<F>(lambda)));
-        return m_handlers.back();
+        return m_handlers.end();
     }
 
 private:
