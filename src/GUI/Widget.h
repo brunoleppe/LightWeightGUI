@@ -12,13 +12,25 @@
 
 #include "Delegate.h"
 #include "ILayout.h"
+#include "IMeasurer.h"
 #include "IRenderer.h"
 #include "Layout.h"
 #include "Property.h"
 #include "Types.h"
 
 namespace lw {
-class Widget : public IRenderable, public ILayoutable {
+
+class Widget;
+
+class AbsoluteBoundingBoxMeasurer : public IMeasurer {
+    Widget* m_widget;
+public:
+    AbsoluteBoundingBoxMeasurer(Widget* widget) : m_widget(widget) {}
+    Size ComputeMinSize(const Widget* widget) override;
+};
+
+
+class Widget : public IRenderable, public ILayoutable, public IMeasurable {
     std::vector<std::unique_ptr<Widget>> children;
     Widget* parent = nullptr;
 
@@ -36,8 +48,9 @@ class Widget : public IRenderable, public ILayoutable {
     }
 
 protected:
-    std::unique_ptr<IRenderer> renderer;
-    std::unique_ptr<ILayout> layout;
+    std::unique_ptr<IRenderer> m_renderer;
+    std::unique_ptr<ILayout> m_layout;
+    std::unique_ptr<IMeasurer> m_measurer;
 
 public:
     inline static bool anyDirty{true};
@@ -116,21 +129,30 @@ public:
     }
 
     IRenderer* GetRenderer() {
-        if (!renderer) {
-            renderer = CreateRenderer();
+        if (!m_renderer) {
+            m_renderer = CreateRenderer();
         }
-        return renderer.get();
+        return m_renderer.get();
     }
 
     ILayout* GetLayout() {
-        if (!layout) {
-            layout = CreateLayout();
+        if (!m_layout) {
+            m_layout = CreateLayout();
         }
-        return layout.get();
+        return m_layout.get();
+    }
+    IMeasurer* GetMeasurer() {
+        if (!m_measurer) {
+            m_measurer = CreateMeasurer();
+        }
+        return m_measurer.get();
     }
 
     std::unique_ptr<ILayout> CreateLayout() override {
         return std::make_unique<DefaultLayout>();
+    }
+    std::unique_ptr<IMeasurer> CreateMeasurer() override {
+        return std::make_unique<AbsoluteBoundingBoxMeasurer>(this);
     }
 
     MulticastDelegate<Widget*> onClick;
@@ -148,6 +170,19 @@ public:
         Refresh();
     }
 };
+
+inline Size AbsoluteBoundingBoxMeasurer::ComputeMinSize(const Widget* widget) {
+    int maxWidth = 0;
+    int maxHeight = 0;
+    for (auto& child : widget->GetChildren()) {
+        Size childSize = child->GetMeasurer()->ComputeMinSize(child.get());
+        maxWidth = std::max(maxWidth, childSize.width + child->transform->x);
+        maxHeight = std::max(maxHeight, childSize.height + child->transform->y);
+    }
+    return {maxWidth, maxHeight};
+}
+
+
 } // namespace lw
 
 #endif // LIGHTWEIGHTGUI_WIDGET_H

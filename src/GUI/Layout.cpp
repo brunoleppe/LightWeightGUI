@@ -88,7 +88,7 @@ void LayoutSubsystem::Layout(Widget* root) {
 
     // Standard BFS to visit every visible node
     std::queue<std::pair<Widget*, int>> traversalStack;
-    traversalStack.push({root, 0});
+    traversalStack.emplace(root, 0);
 
     while (!traversalStack.empty()) {
         auto [current, depth] = traversalStack.front();
@@ -101,7 +101,7 @@ void LayoutSubsystem::Layout(Widget* root) {
         }
 
         for (auto& child : current->GetChildren()) {
-            traversalStack.push({child.get(), depth + 1});
+            traversalStack.emplace(child.get(), depth + 1);
         }
     }
 
