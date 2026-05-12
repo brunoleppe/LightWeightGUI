@@ -39,9 +39,10 @@ protected:
     std::unique_ptr<IRenderer> renderer;
     std::unique_ptr<ILayout> layout;
 
-    std::string name{};
 
 public:
+    inline static bool anyDirty{true};
+
     Property<Rect> transform{};
     Property<LwColor> backgroundColor{};
     Property<LwColor> foregroundColor{};
@@ -49,11 +50,12 @@ public:
     Property<bool> visible{true};
     Property<bool> enabled{true};
 
-    inline static bool anyDirty{true};
-
     bool focused{false};
     bool needsRedraw{true};
     bool needsRefresh{false};
+
+    std::string name{};
+
 
     Widget() {
         auto trigger_refresh = [this]() {
@@ -132,10 +134,6 @@ public:
     MulticastDelegate<Widget*> onClick;
     MulticastDelegate<Widget*> onClickDown;
     MulticastDelegate<Widget*> onClickUp;
-
-    const std::string& GetName() const {
-        return name;
-    }
 
 };
 } // namespace lw

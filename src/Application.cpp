@@ -9,8 +9,6 @@
 #include <emscripten/emscripten.h>
 #endif
 namespace lw {
-
-
 #if defined(PLATFORM_WEB)
 Application* Application::s_app{nullptr};
 
@@ -26,7 +24,6 @@ Application::Application() {
     s_app = this;
 #endif
     SetConfigFlags(FLAG_MSAA_4X_HINT);
-
 }
 
 Application::~Application() {
@@ -51,7 +48,7 @@ void Application::Run() {
     }
 }
 
-void Application::Update(){
+void Application::Update() {
     Vector2 mousePos = GetMousePosition();
     InputState input{
         static_cast<int>(mousePos.x), static_cast<int>(mousePos.y),
@@ -60,7 +57,7 @@ void Application::Update(){
         IsMouseButtonReleased(MOUSE_BUTTON_LEFT)
     };
 
-    Rect windowRect = {0,0,GetScreenWidth(), GetScreenHeight()};
+    const Rect windowRect = {0, 0, GetScreenWidth(), GetScreenHeight()};
 
     if (windowRect != m_overlayRoot.transform) {
         m_overlayRoot.transform = windowRect;
@@ -68,10 +65,10 @@ void Application::Update(){
     }
 
     m_layoutSubsystem.Layout(m_window);
-    m_inputSystem.Process(m_window, input);
+    m_inputSystem.Process(&m_overlayRoot, m_window, input, windowRect);
 
     BeginDrawing();
-    m_renderSubsystem.Render(&m_overlayRoot, m_window, {0,0,GetScreenWidth(),GetScreenHeight()});
+    m_renderSubsystem.Render(&m_overlayRoot, m_window, windowRect);
     DrawText(TextFormat("Mouse X: %d\nMouse Y: %d", input.mouseX, input.mouseY), 10, 10, 20, BLACK);
     EndDrawing();
 }

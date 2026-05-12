@@ -14,10 +14,13 @@ int main(int argc, char* argv[]) {
     auto* p3 = static_cast<lw::Panel*>(w->AddWidget(std::make_unique<lw::Panel>()));
     p1->transform = {0,0,200,450};
     p1->backgroundColor = {RED};
+    p1->name = "Panel1";
     p2->transform = {200,0,200,450};
     p2->backgroundColor = {GREEN};
+    p2->name = "Panel2";
     p3->transform = {400,0,200,450};
     p3->backgroundColor = {BLUE};
+    p3->name = "Panel3";
 
 
     auto* p4 = static_cast<lw::Panel*>(p1->AddWidget(std::make_unique<lw::Panel>()));
@@ -27,14 +30,20 @@ int main(int argc, char* argv[]) {
     auto* p6 = static_cast<lw::Panel*>(p1->AddWidget(std::make_unique<lw::Panel>()));
     p6->backgroundColor = {YELLOW};
 
+    p4->name = "Panel4";
+    p5->name = "Panel5";
+    p6->name = "Panel6";
+
     p4->onClick.Bind([&p6, &p2](lw::Widget* w) {
         p6->visible = !p6->visible;
         p2->backgroundColor = lw::LwColor::GetRandomColor();
     });
 
-    w->onClick.Bind([](lw::Widget* w) {
-        std::cout << "Widget clicked: " << w << std::endl;
-    });
+    auto* over1 = lw::Application::AddToOverlay(std::make_unique<lw::Panel>());
+    over1->backgroundColor = {DARKBLUE};
+    over1->transform = {200,175,50,50};
+    over1->name = "Overlay1";
+
     app.Run();
     return 0;
 }

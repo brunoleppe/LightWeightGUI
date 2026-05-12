@@ -35,7 +35,9 @@ public:
     T* operator ->() {
         return &n;
     }
-
+    T* operator ->() const{
+        return &n;
+    }
     operator T() const { return n; }
 };
 } // namespace lw
