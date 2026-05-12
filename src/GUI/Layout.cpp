@@ -97,6 +97,7 @@ void LayoutSubsystem::Layout(Widget* root) {
         if (!current->visible) { continue; }
         if (current->needsRefresh) {
             m_queue.push_back({current, depth});
+            current->needsRefresh = false;
         }
 
         for (auto& child : current->GetChildren()) {

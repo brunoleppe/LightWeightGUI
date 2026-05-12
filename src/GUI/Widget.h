@@ -55,6 +55,7 @@ public:
 
     Widget() {
         auto trigger_refresh = [this]() {
+            Redraw();
             Refresh();
         };
         auto trigger_redraw = [this]() {
