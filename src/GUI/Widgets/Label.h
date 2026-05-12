@@ -19,15 +19,27 @@ public:
     LabelRenderer(Label* label)
         : m_label(label) {
     }
+
     void Render(const Rect& rect) override;
 };
 
-class Label : public Widget {
+class LabelMeasurer : public IMeasurer {
+    Label* m_label;
 
 public:
-    void GetTextSize() {
+    LabelMeasurer(Label* label)
+        : m_label(label) {
+    }
+
+    LwSize ComputeMinSize() const override;
+};
+
+class Label : public Widget {
+public:
+    LwSize GetTextSize() {
         Vector2 s = MeasureTextEx(font, text->c_str(), font->fontSize, font->spacing);
         transform = {0, 0, (int)s.x, (int)s.y};
+        return {transform->width, transform->height};
     }
 
     std::unique_ptr<IRenderer> CreateRenderer() override {
@@ -45,14 +57,22 @@ public:
         GetTextSize();
     }
 
+    std::unique_ptr<IMeasurer> CreateMeasurer() override {
+        return std::make_unique<LabelMeasurer>(this);
+    }
     Property<std::string> text;
     Property<LwFont> font;
 };
 
 
 inline void LabelRenderer::Render(const Rect& rect) {
-    DrawTextEx(m_label->font, m_label->text->c_str(), {(float)rect.x, (float)rect.y}, m_label->font->fontSize, m_label->font->spacing,
+    DrawTextEx(m_label->font, m_label->text->c_str(), {(float)rect.x, (float)rect.y}, m_label->font->fontSize,
+               m_label->font->spacing,
                Theme::Get().textMaterial.textColor);
+}
+
+inline LwSize LabelMeasurer::ComputeMinSize() const {
+    return m_label->GetTextSize();
 }
 } // lw
 

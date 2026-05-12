@@ -13,8 +13,11 @@
 
 namespace lw {
 
-struct Size {
+struct LwSize {
     int width, height;
+    bool operator==(const LwSize& other) const {
+        return width == other.width && height == other.height;
+    }
 };
 
 struct Rect {

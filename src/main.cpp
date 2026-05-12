@@ -29,10 +29,16 @@ int main(int argc, char* argv[]) {
     p4->name = "Panel4";
     p5->name = "Panel5";
     p6->name = "Panel6";
+    p4->minSize = {50,50};
+    p5->minSize = {50,50};
+    p6->minSize = {50,50};
 
-
-    lw::Label* l = static_cast<lw::Label*>(p6->AddWidget(std::make_unique<lw::Label>()));
-    l->Position(10,10);
+    lw::Label* l1 = static_cast<lw::Label*>(p4->AddWidget(std::make_unique<lw::Label>()));
+    lw::Label* l2 = static_cast<lw::Label*>(p5->AddWidget(std::make_unique<lw::Label>()));
+    lw::Label* l3 = static_cast<lw::Label*>(p6->AddWidget(std::make_unique<lw::Label>()));
+    l1->Position(20,20);
+    l2->Position(20,20);
+    l3->Position(20,20);
 
     p4->onClick.Bind([&p6, &p2](lw::Widget* w) {
         p6->visible = !p6->visible;

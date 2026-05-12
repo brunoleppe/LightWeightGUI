@@ -16,7 +16,7 @@ class Widget;
 class IMeasurer {
 public:
     virtual ~IMeasurer() = default;
-    virtual Size ComputeMinSize(const Widget* widget) = 0;
+    virtual LwSize ComputeMinSize() const = 0;
 };
 
 class IMeasurable {

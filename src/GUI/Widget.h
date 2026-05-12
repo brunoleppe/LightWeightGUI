@@ -19,14 +19,17 @@
 #include "Types.h"
 
 namespace lw {
-
 class Widget;
 
 class AbsoluteBoundingBoxMeasurer : public IMeasurer {
     Widget* m_widget;
+
 public:
-    AbsoluteBoundingBoxMeasurer(Widget* widget) : m_widget(widget) {}
-    Size ComputeMinSize(const Widget* widget) override;
+    AbsoluteBoundingBoxMeasurer(Widget* widget)
+        : m_widget(widget) {
+    }
+
+    LwSize ComputeMinSize() const override;
 };
 
 
@@ -61,6 +64,8 @@ public:
     Property<InteractionState> interactionState{InteractionState::Normal};
     Property<bool> visible{true};
     Property<bool> enabled{true};
+    Property<LwSize> minSize{};
+    Property<LwSize> fixedSize{};
 
     bool focused{false};
     bool needsRedraw{true};
@@ -128,7 +133,24 @@ public:
         Refresh();
     }
 
-    IRenderer* GetRenderer() {
+
+    void Position(int x, int y) {
+        Rect newRect = {x, y, transform->width, transform->height};
+        transform = newRect;
+        Refresh();
+    }
+
+    LwSize GetDesiredLayoutSize() {
+        LwSize size = GetMeasurer()->ComputeMinSize();
+        if (fixedSize.IsSet()) size = fixedSize;
+        if (minSize.IsSet()){
+            size.width = std::max(minSize->width, size.width);
+            size.height = std::max(minSize->height, size.height);
+        }
+        return size;
+    }
+
+    IRenderer* GetRenderer(){
         if (!m_renderer) {
             m_renderer = CreateRenderer();
         }
@@ -141,6 +163,7 @@ public:
         }
         return m_layout.get();
     }
+
     IMeasurer* GetMeasurer() {
         if (!m_measurer) {
             m_measurer = CreateMeasurer();
@@ -151,38 +174,27 @@ public:
     std::unique_ptr<ILayout> CreateLayout() override {
         return std::make_unique<DefaultLayout>();
     }
+
     std::unique_ptr<IMeasurer> CreateMeasurer() override {
         return std::make_unique<AbsoluteBoundingBoxMeasurer>(this);
     }
 
+
     MulticastDelegate<Widget*> onClick;
     MulticastDelegate<Widget*> onClickDown;
     MulticastDelegate<Widget*> onClickUp;
-
-    void Position(int x, int y) {
-        Rect newRect = {x, y, transform->width, transform->height};
-        transform = newRect;
-        Refresh();
-    }
-    void Size(int width, int height) {
-        Rect newRect = {transform->x, transform->y, width, height};
-        transform = newRect;
-        Refresh();
-    }
 };
 
-inline Size AbsoluteBoundingBoxMeasurer::ComputeMinSize(const Widget* widget) {
+inline LwSize AbsoluteBoundingBoxMeasurer::ComputeMinSize() const {
     int maxWidth = 0;
     int maxHeight = 0;
-    for (auto& child : widget->GetChildren()) {
-        Size childSize = child->GetMeasurer()->ComputeMinSize(child.get());
+    for (auto& child : m_widget->GetChildren()) {
+        LwSize childSize = child->GetMeasurer()->ComputeMinSize();
         maxWidth = std::max(maxWidth, childSize.width + child->transform->x);
         maxHeight = std::max(maxHeight, childSize.height + child->transform->y);
     }
     return {maxWidth, maxHeight};
 }
-
-
 } // namespace lw
 
 #endif // LIGHTWEIGHTGUI_WIDGET_H
