@@ -54,6 +54,8 @@ public:
     bool needsRedraw{true};
     bool needsRefresh{false};
 
+    int zIndex{0};
+
     std::string name{};
 
 
@@ -93,6 +95,7 @@ public:
 
 
     Widget* AddWidget(std::unique_ptr<Widget> widget) {
+        widget->zIndex = zIndex+1;
         children.push_back(std::move(widget));
         children.back()->SetParent(this);
         Refresh();

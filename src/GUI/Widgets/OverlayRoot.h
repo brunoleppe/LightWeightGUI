@@ -22,6 +22,9 @@ public:
 
 class OverlayRoot : public Widget {
 public:
+    OverlayRoot() {
+        zIndex = 1000;
+    }
     std::unique_ptr<IRenderer> CreateRenderer() override {
         return std::make_unique<OverlayRootRenderer>();
     }

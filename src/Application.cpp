@@ -4,6 +4,7 @@
 
 #include "Application.h"
 
+#include "Utils.h"
 #include "raylib.h"
 #if defined(PLATFORM_WEB)
 #include <emscripten/emscripten.h>
