@@ -26,8 +26,9 @@ public:
 class Panel : public Widget {
 public:
     Panel() {
-        name = "Panel_"+std::to_string(reinterpret_cast<long>(this));
+        name = "Panel_" + std::to_string(reinterpret_cast<long>(this));
     }
+
     std::unique_ptr<IRenderer> CreateRenderer() override {
         return std::make_unique<PanelRenderer>(this);
     }
@@ -35,7 +36,7 @@ public:
 
 
 inline void PanelRenderer::Render(const Rect& rect) {
-    DrawRectangle(rect.x, rect.y, rect.width, rect.height, m_panel->backgroundColor);
+    DrawRectangle(rect.x, rect.y, rect.width, rect.height, Theme::Get().floatingCard.surface.color1);
 }
 } // llw
 

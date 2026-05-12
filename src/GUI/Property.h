@@ -14,6 +14,7 @@ template <typename T>
 struct Property {
 private:
     T n;
+    bool isSet{false};
 
 public:
     std::function<void()> on_change;
@@ -25,6 +26,7 @@ public:
     Property& operator=(const T& n_) {
         if (!(this->n == n_)) {
             this->n = n_;
+            isSet = true;
             if (on_change) {
                 on_change();
             }
@@ -32,12 +34,21 @@ public:
         return *this;
     }
 
+    void Reset() {
+        isSet = false;
+        n = T{};
+    }
+
+    bool IsSet() const { return isSet; }
+
     T* operator ->() {
         return &n;
     }
-    T* operator ->() const{
+
+    T* operator ->() const {
         return &n;
     }
+
     operator T() const { return n; }
 };
 } // namespace lw

@@ -12,17 +12,19 @@
 #include "raylib.h"
 
 namespace lw {
-
 struct Rect {
     int x, y, width, height;
+
+    Rectangle AsRectangle() const {
+        return {static_cast<float>(x), static_cast<float>(y), static_cast<float>(width), static_cast<float>(height)};
+    }
 
     bool operator==(const Rect& o) const {
         return x == o.x && y == o.y && width == o.width && height == o.height;
     }
 };
 
-struct LwColor : Color{
-
+struct LwColor : Color {
     LwColor& operator=(const Color& c) {
         r = c.r;
         g = c.g;
@@ -30,6 +32,7 @@ struct LwColor : Color{
         a = c.a;
         return *this;
     }
+
     LwColor& operator=(const LwColor& c) {
         r = c.r;
         g = c.g;
@@ -43,8 +46,7 @@ struct LwColor : Color{
     }
 
 
-    static LwColor GetRandomColor()
-    {
+    static LwColor GetRandomColor() {
         LwColor c;
         c.r = GetRandomValue(0, 255);
         c.g = GetRandomValue(0, 255);
@@ -52,10 +54,10 @@ struct LwColor : Color{
         c.a = 255;
         return c;
     }
+
 private:
-    static int GetRandomValue(int min, int max)
-    {
-       return (rand() % (max - min + 1)) + min;
+    static int GetRandomValue(int min, int max) {
+        return (rand() % (max - min + 1)) + min;
     }
 };
 
@@ -77,7 +79,6 @@ struct InputState {
     bool mousePressed;
     bool mouseReleased;
 };
-
 } // namespace lw
 
 #endif // LIGHTWEIGHTGUI_TYPES_H

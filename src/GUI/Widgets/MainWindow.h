@@ -7,6 +7,7 @@
 #ifndef LIGHTWEIGTHGUI_MAINWINDOW_H
 #define LIGHTWEIGTHGUI_MAINWINDOW_H
 #include "ClippingStack.h"
+#include "Theme.h"
 #include "Widget.h"
 #include "raylib.h"
 
@@ -49,7 +50,7 @@ public:
 
 
 inline void MainWindowRenderer::Render(const Rect& /*parentAbsRect*/) {
-    ClearBackground(GRAY);
+    ClearBackground(Theme::Get().windowBackground.surface.color1);
     // RenderSubsystem handles children traversal and clipping.
 }
 } // lw
