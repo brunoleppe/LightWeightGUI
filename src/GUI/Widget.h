@@ -39,7 +39,6 @@ protected:
     std::unique_ptr<IRenderer> renderer;
     std::unique_ptr<ILayout> layout;
 
-
 public:
     inline static bool anyDirty{true};
 
@@ -95,7 +94,7 @@ public:
 
 
     Widget* AddWidget(std::unique_ptr<Widget> widget) {
-        widget->zIndex = zIndex+1;
+        widget->zIndex = zIndex + 1;
         children.push_back(std::move(widget));
         children.back()->SetParent(this);
         Refresh();
@@ -138,6 +137,16 @@ public:
     MulticastDelegate<Widget*> onClickDown;
     MulticastDelegate<Widget*> onClickUp;
 
+    void Position(int x, int y) {
+        Rect newRect = {x, y, transform->width, transform->height};
+        transform = newRect;
+        Refresh();
+    }
+    void Size(int width, int height) {
+        Rect newRect = {transform->x, transform->y, width, height};
+        transform = newRect;
+        Refresh();
+    }
 };
 } // namespace lw
 

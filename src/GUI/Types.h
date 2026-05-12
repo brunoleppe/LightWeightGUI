@@ -12,6 +12,11 @@
 #include "raylib.h"
 
 namespace lw {
+
+struct Size {
+    int width, height;
+};
+
 struct Rect {
     int x, y, width, height;
 
@@ -61,9 +66,9 @@ private:
     }
 };
 
-
-struct Size {
-    int width, height;
+struct LwFont : Font {
+    float fontSize;
+    float spacing;
 };
 
 enum class InteractionState {

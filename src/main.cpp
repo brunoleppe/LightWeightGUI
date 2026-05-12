@@ -2,6 +2,7 @@
 #include <raylib.h>
 
 #include "Application.h"
+#include "Label.h"
 #include "Layout.h"
 #include "LayoutPanel.h"
 #include "GUI/Widgets/Panel.h"
@@ -28,6 +29,10 @@ int main(int argc, char* argv[]) {
     p4->name = "Panel4";
     p5->name = "Panel5";
     p6->name = "Panel6";
+
+
+    lw::Label* l = static_cast<lw::Label*>(p6->AddWidget(std::make_unique<lw::Label>()));
+    l->Position(10,10);
 
     p4->onClick.Bind([&p6, &p2](lw::Widget* w) {
         p6->visible = !p6->visible;

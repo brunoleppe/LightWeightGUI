@@ -32,7 +32,9 @@ add_executable(LightWeightGUI src/main.cpp
         src/GUI/Theme.cpp
         src/GUI/Theme.h
         src/GUI/Utils.cpp
-        src/GUI/Utils.h)
+        src/GUI/Utils.h
+        src/GUI/Widgets/BaseButton.h
+        src/GUI/Widgets/Label.h)
 
 if(EMSCRIPTEN)
     set(CMAKE_EXECUTABLE_SUFFIX ".html")

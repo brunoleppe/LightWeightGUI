@@ -43,6 +43,13 @@ struct ShadowOffsetMap {
     std::vector<int> yOffsetMap { 0, 2, 4, 6, 8, 10, 12, 16, 20, 24 };
 };
 
+struct TextMaterial {
+    LwColor textColor;
+    int fontSize = 12;
+    int fontWeight = 400;
+    LwFont font;
+};
+
 struct Theme {
     // Material presets
     ButtonMaterial primaryButton{};
@@ -54,6 +61,10 @@ struct Theme {
         0.1f};
     AlphaMap alphaMap;
     ShadowOffsetMap shadowOffsetMap;
+
+    TextMaterial textMaterial{
+        {0xBB,0x86,0xFC,0xFF}
+    };;
 
     float GetAlpha(int elevationIndex) const {
         if (elevationIndex < 0 || elevationIndex >= alphaMap.map.size()) {
