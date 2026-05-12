@@ -34,7 +34,7 @@ public:
             InitWindow(width, height, title);
         }
         transform = {0, 0, width, height};
-        name = "MainWindow_"+std::to_string(reinterpret_cast<long>(this));
+        name = "MainWindow_"+std::to_string(reinterpret_cast<long long>(this));
 
     }
 
