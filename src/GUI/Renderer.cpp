@@ -71,17 +71,10 @@ void RenderSubsystem::Render(Widget* overlay, Widget* root, const Rect& rect) {
     }
 
     // Rebuild composite only when something changed
-    if (Widget::anyDirty || !overlay->GetChildren().empty()) {
+    if (Widget::anyDirty) {
         BeginTextureMode(m_composite);
         ClearBackground(BLANK);
-    }
-
-    if (Widget::anyDirty) {
         RenderWidgetTree(root, rect);
-    }
-    RenderWidgetTree(overlay, rect);
-
-    if (Widget::anyDirty || !overlay->GetChildren().empty()) {
         EndTextureMode();
         Widget::anyDirty = false;
     }
@@ -90,5 +83,7 @@ void RenderSubsystem::Render(Widget* overlay, Widget* root, const Rect& rect) {
     auto w = static_cast<float>(m_composite.texture.width);
     auto h = static_cast<float>(m_composite.texture.height);
     DrawTextureRec(m_composite.texture, {0.0f, 0.0f, w, -h}, {0.0f, 0.0f}, WHITE);
+    RenderWidgetTree(overlay, rect);
+
 }
 } // lw
