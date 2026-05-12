@@ -21,6 +21,7 @@ add_executable(LightWeightGUI src/main.cpp
         src/GUI/InputSystem.h
         src/GUI/InputSystem.cpp
         src/GUI/Widgets/Panel.h
+        src/GUI/Widgets/OverlayRoot.h
         src/GUI/ClippingStack.h
         src/GUI/Layout.h
         src/GUI/Layout.cpp

@@ -24,9 +24,11 @@ class RenderSubsystem {
     RenderTexture2D m_composite{};
     bool m_initialized{false};
 
+    void RenderWidgetTree(Widget* widget, const Rect& parentAbsRect);
+
 public:
     ~RenderSubsystem();
-    void Render(Widget* root, const Rect& rect);
+    void Render(Widget* overlay, Widget* root, const Rect& rect);
 };
 
 

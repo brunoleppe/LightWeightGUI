@@ -26,6 +26,7 @@ Application::Application() {
     s_app = this;
 #endif
     SetConfigFlags(FLAG_MSAA_4X_HINT);
+
 }
 
 Application::~Application() {
@@ -59,15 +60,23 @@ void Application::Update(){
         IsMouseButtonReleased(MOUSE_BUTTON_LEFT)
     };
 
-    m_layoutSubsystem.Layout(m_window);
+    Rect windowRect = {0,0,GetScreenWidth(), GetScreenHeight()};
 
+    if (windowRect != m_overlayRoot.transform) {
+        m_overlayRoot.transform = windowRect;
+        m_window->transform = windowRect;
+    }
+
+    m_layoutSubsystem.Layout(m_window);
     m_inputSystem.Process(m_window, input);
 
     BeginDrawing();
-    m_renderSubsystem.Render(m_window, {0,0,GetScreenWidth(),GetScreenHeight()});
-    // m_window->GetRenderer()->Render({0, 0, GetScreenWidth(), GetScreenHeight()});
+    m_renderSubsystem.Render(&m_overlayRoot, m_window, {0,0,GetScreenWidth(),GetScreenHeight()});
     DrawText(TextFormat("Mouse X: %d\nMouse Y: %d", input.mouseX, input.mouseY), 10, 10, 20, BLACK);
     EndDrawing();
 }
 
+Widget* Application::AddToOverlay(std::unique_ptr<Widget> widget) {
+    return m_overlayRoot.AddWidget(std::move(widget));
+}
 } // lw

@@ -6,6 +6,7 @@
 #define LIGHTWEIGTHGUI_APPLICATION_H
 #include "InputSystem.h"
 #include "MainWindow.h"
+#include "OverlayRoot.h"
 #include "Renderer.h"
 
 namespace lw {
@@ -18,10 +19,14 @@ class Application {
     InputSystem m_inputSystem;
     LayoutSubsystem m_layoutSubsystem;
     RenderSubsystem m_renderSubsystem;
+    static inline OverlayRoot m_overlayRoot;
 
     void Update();
 
 public:
+
+    static Widget* AddToOverlay(std::unique_ptr<Widget> widget);
+
     Application(const Application&) = delete;
     Application& operator=(const Application&) = delete;
 
