@@ -5,6 +5,9 @@
  */
 
 #include "InputSystem.h"
+
+#include <iostream>
+
 #include "Widget.h"
 
 namespace lw {
@@ -54,8 +57,12 @@ void InputSystem::Process(Widget* root, const InputState& input) {
     } else if (input.mouseReleased) {
         if (m_capturedWidget) {
             m_capturedWidget->onClickUp.Broadcast(m_capturedWidget);
-            if (m_capturedWidget == hit)
+            if (m_capturedWidget == hit) {
                 m_capturedWidget->onClick.Broadcast(m_capturedWidget);
+#ifndef NDEBUG
+                std::cout << "Clicked: " << m_capturedWidget->GetName() << std::endl;
+#endif
+            }
             m_capturedWidget->interactionState = (m_capturedWidget == hit)
                 ? InteractionState::Hovered
                 : InteractionState::Normal;

@@ -39,6 +39,8 @@ protected:
     std::unique_ptr<IRenderer> renderer;
     std::unique_ptr<ILayout> layout;
 
+    std::string name{};
+
 public:
     Property<Rect> transform{};
     Property<LwColor> backgroundColor{};
@@ -131,6 +133,9 @@ public:
     MulticastDelegate<Widget*> onClickDown;
     MulticastDelegate<Widget*> onClickUp;
 
+    const std::string& GetName() const {
+        return name;
+    }
 
 };
 } // namespace lw

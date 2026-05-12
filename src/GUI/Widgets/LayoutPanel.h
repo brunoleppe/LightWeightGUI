@@ -30,6 +30,9 @@ public:
 
 class LayoutPanel : public Panel {
 public:
+    LayoutPanel() {
+        name = "LayoutPanel_"+std::to_string(reinterpret_cast<long>(this));
+    }
     LinearLayout layout{0,5,5,false};
 
     std::unique_ptr<IRenderer> CreateRenderer() override {

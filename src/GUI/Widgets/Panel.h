@@ -25,6 +25,9 @@ public:
 
 class Panel : public Widget {
 public:
+    Panel() {
+        name = "Panel_"+std::to_string(reinterpret_cast<long>(this));
+    }
     std::unique_ptr<IRenderer> CreateRenderer() override {
         return std::make_unique<PanelRenderer>(this);
     }
