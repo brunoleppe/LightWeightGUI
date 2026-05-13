@@ -38,7 +38,8 @@ class Label : public Widget {
 public:
     LwSize GetTextSize() {
         Vector2 s = MeasureTextEx(font, text->c_str(), font->fontSize, font->spacing);
-        transform = {0, 0, (int)s.x, (int)s.y};
+        Rect newTransform = {transform->x, transform->y, (int)s.x, (int)s.y};
+        transform = newTransform;
         return {transform->width, transform->height};
     }
 
