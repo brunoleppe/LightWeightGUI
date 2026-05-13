@@ -10,6 +10,7 @@
 
 namespace lw {
 struct DrawingUtils {
+    static constexpr int ROUNDNESS_SEGMENTS = 16;
 
     static LwColor GetElevationColor(const LwColor& baseThemeColor, float elevationAlpha) {
         // Clamp alpha between 0.0f and 1.0f just to be safe
@@ -27,6 +28,20 @@ struct DrawingUtils {
         result.a = 255;
 
         return result;
+    }
+
+    static void DrawWidgetShadow(Rectangle bounds, int elevationLevel, float roundness = 0.0f) {
+        if (elevationLevel == 0) { return; }
+        float shadowAlpha = Theme::Get().GetAlpha(elevationLevel);
+        int yOffset = Theme::Get().GetShadowOffset(elevationLevel);
+        Color shadowColor = Fade(BLACK, shadowAlpha);
+        Rectangle shadowBounds = bounds;
+        shadowBounds.y += yOffset;
+        if (roundness > 0.0f) {
+            DrawRectangleRounded(shadowBounds, roundness, ROUNDNESS_SEGMENTS, shadowColor);
+        } else {
+            DrawRectangleRec(shadowBounds, shadowColor);
+        }
     }
 };
 }

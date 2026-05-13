@@ -19,20 +19,7 @@ public:
     PanelRenderer(Panel* panel)
         : m_panel(panel) {
     }
-    void DrawWidgetShadow(Rectangle bounds, int elevationLevel, float roundness = 0.0f) {
 
-        if (elevationLevel == 0) return;
-        float shadowAlpha = Theme::Get().GetAlpha(elevationLevel);
-        int yOffset = Theme::Get().GetShadowOffset(elevationLevel);
-        Color shadowColor = Fade(BLACK, shadowAlpha);
-        Rectangle shadowBounds = bounds;
-        shadowBounds.y += yOffset;
-        if (roundness > 0.0f) {
-            DrawRectangleRounded(shadowBounds, roundness, 16, shadowColor);
-        } else {
-            DrawRectangleRec(shadowBounds, shadowColor);
-        }
-    }
     void Render(const Rect& rect) override;
 };
 
@@ -56,10 +43,20 @@ inline void PanelRenderer::Render(const Rect& rect) {
         rect.height - lineOffset * 2
     };
 
-    LwColor panelColor = Theme::Get().floatingCard.surface.color1;
-    panelColor = DrawingUtils::GetElevationColor(panelColor, Theme::Get().GetAlpha(m_panel->zIndex));
-    DrawWidgetShadow(panelRect, m_panel->zIndex,Theme::Get().floatingCard.cornerRadius);
-    DrawRectangleRounded(panelRect, Theme::Get().floatingCard.cornerRadius, 4, panelColor);
+    LwColor panelColor;
+    if (m_panel->backgroundColor.IsSet()) {
+        panelColor = m_panel->backgroundColor;
+    }
+    else {
+        panelColor = DrawingUtils::GetElevationColor(Theme::Get().panelBackground.surface.color1, Theme::Get().GetAlpha(m_panel->zIndex));
+    }
+    DrawingUtils::DrawWidgetShadow(panelRect, m_panel->zIndex,0);
+    if (Theme::Get().panelBackground.cornerRadius == 0.f) {
+        DrawRectangle(panelRect.x, panelRect.y, panelRect.width, panelRect.height, panelColor);
+    }
+    else {
+        DrawRectangleRounded(panelRect, Theme::Get().panelBackground.cornerRadius, 16, panelColor);
+    }
 }
 } // llw
 

@@ -17,6 +17,11 @@ struct SurfaceMaterial {
     LwColor color2;
 };
 
+struct LineMaterial {
+    LwColor color;
+    int thickness = 0;
+};
+
 struct ButtonMaterial {
     SurfaceMaterial normal;
     SurfaceMaterial hovered;
@@ -33,14 +38,15 @@ struct ButtonMaterial {
 struct PanelMaterial {
     SurfaceMaterial surface;
     float cornerRadius = 0;
+    LineMaterial border;
 };
 
 struct AlphaMap {
-    std::vector<float> map{ 0.0f, 0.05f, 0.07f, 0.08f, 0.09f, 0.11f, 0.12f, 0.14f, 0.15f, 0.16f };
+    std::vector<float> map{0.0f, 0.05f, 0.07f, 0.08f, 0.09f, 0.11f, 0.12f, 0.14f, 0.15f, 0.16f};
 };
 
 struct ShadowOffsetMap {
-    std::vector<int> yOffsetMap { 0, 2, 4, 6, 8, 10, 12, 16, 20, 24 };
+    std::vector<int> yOffsetMap{0, 2, 4, 6, 8, 10, 12, 16, 20, 24};
 };
 
 struct TextMaterial {
@@ -51,19 +57,31 @@ struct TextMaterial {
 };
 
 struct Theme {
+    static constexpr LwColor DEFAULT_BACKGROUND_COLOR{0x24, 0x24, 0x24, 255};
+    static constexpr LwColor DEFAULT_LINE_COLOR{0x0, 0x0, 0x0, 255};
+    static constexpr LwColor DEFAULT_TEXT_COLOR{0xBB, 0x86, 0xFC, 0xFF};
+
+
     // Material presets
     ButtonMaterial primaryButton{};
     ButtonMaterial secondaryButton{};
 
-    PanelMaterial windowBackground{{FillType::Solid, {0x24, 0x24, 0x24, 255}}};
+    PanelMaterial windowBackground{{FillType::Solid, DEFAULT_BACKGROUND_COLOR}};
+    PanelMaterial panelBackground{
+        {FillType::Solid, DEFAULT_BACKGROUND_COLOR},
+        0.f,
+        {DEFAULT_LINE_COLOR, 0}
+    };
     PanelMaterial floatingCard{
-        {FillType::Solid, {0x24, 0x24, 0x24, 255}},
-        0.1f};
+        {FillType::Solid, DEFAULT_BACKGROUND_COLOR},
+        0.1f,
+        {DEFAULT_LINE_COLOR, 0}
+    };
     AlphaMap alphaMap;
     ShadowOffsetMap shadowOffsetMap;
 
     TextMaterial textMaterial{
-        {0xBB,0x86,0xFC,0xFF}
+        DEFAULT_TEXT_COLOR
     };;
 
     float GetAlpha(int elevationIndex) const {
@@ -72,6 +90,7 @@ struct Theme {
         }
         return alphaMap.map[elevationIndex];
     }
+
     float GetShadowOffset(int elevationIndex) const {
         if (elevationIndex < 0 || elevationIndex >= shadowOffsetMap.yOffsetMap.size()) {
             return shadowOffsetMap.yOffsetMap.back();
