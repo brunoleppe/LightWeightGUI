@@ -30,8 +30,6 @@ public:
     ~RenderSubsystem();
     void Render(Widget* overlay, Widget* root, const Rect& rect);
 };
-
-
 } // lw
 
 #endif //LIGHTWEIGTHGUI_RENDERER_H

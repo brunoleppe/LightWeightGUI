@@ -143,14 +143,14 @@ public:
     LwSize GetDesiredLayoutSize() {
         LwSize size = GetMeasurer()->ComputeMinSize();
         if (fixedSize.IsSet()) size = fixedSize;
-        if (minSize.IsSet()){
+        if (minSize.IsSet()) {
             size.width = std::max(minSize->width, size.width);
             size.height = std::max(minSize->height, size.height);
         }
         return size;
     }
 
-    IRenderer* GetRenderer(){
+    IRenderer* GetRenderer() {
         if (!m_renderer) {
             m_renderer = CreateRenderer();
         }

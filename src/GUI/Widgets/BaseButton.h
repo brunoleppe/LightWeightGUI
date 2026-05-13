@@ -10,7 +10,6 @@
 
 namespace lw {
 class BaseButton : public Widget {
-
 };
 } // lw
 

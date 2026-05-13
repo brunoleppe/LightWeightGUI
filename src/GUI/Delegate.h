@@ -80,7 +80,7 @@ public:
         if (m_handler) {
             return m_handler->operator()(args...);
         }
-        
+
         if constexpr (std::is_void_v<Ret>) {
             return;
         } else {

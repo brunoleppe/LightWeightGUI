@@ -23,7 +23,6 @@ public:
     virtual ~ILayoutable() = default;
     virtual std::unique_ptr<ILayout> CreateLayout() = 0;
 };
-
 } // lw
 
 #endif //LIGHTWEIGTHGUI_ILAYOUT_H

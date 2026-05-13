@@ -35,9 +35,11 @@ public:
         BeginScissorMode(activeRect.x, activeRect.y,
                          activeRect.width, activeRect.height);
     }
+
     static const Rect& Peek() {
         return s_stack.top();
     }
+
     static void Pop() {
         if (s_stack.empty()) {
             EndScissorMode();
@@ -62,7 +64,7 @@ public:
     static bool Intersects(const Rect& rect) {
         if (s_stack.empty()) return true;
         const Rect& top = s_stack.top();
-        int nw = std::min(rect.x + rect.width,  top.x + top.width)  - std::max(rect.x, top.x);
+        int nw = std::min(rect.x + rect.width, top.x + top.width) - std::max(rect.x, top.x);
         int nh = std::min(rect.y + rect.height, top.y + top.height) - std::max(rect.y, top.y);
         return nw > 0 && nh > 0;
     }

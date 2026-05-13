@@ -65,12 +65,12 @@ inline void LayoutPanelLayout::Layout() {
         if (!child->visible) { continue; }
         // LwSize minSize = child->GetMeasurer()->ComputeMinSize();
         LwSize minSize = child->GetDesiredLayoutSize();
-        Rect newTransform{currentX, currentY, 0 ,0};
+        Rect newTransform{currentX, currentY, 0, 0};
         if (layout.horizontal) {
             newTransform.width = minSize.width;
             newTransform.height = std::max(minSize.height, availableHeight);
             currentX += newTransform.width + layout.spacing;
-        }else {
+        } else {
             newTransform.width = std::max(minSize.width, availableWidth);
             newTransform.height = minSize.height;
             currentY += newTransform.height + layout.spacing;

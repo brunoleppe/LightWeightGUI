@@ -12,7 +12,6 @@
 #include "Types.h"
 
 namespace lw {
-
 struct IRenderer {
     virtual ~IRenderer() = default;
     virtual void Render(const Rect& rect) = 0;
@@ -22,7 +21,6 @@ struct IRenderable {
     virtual ~IRenderable() = default;
     virtual std::unique_ptr<IRenderer> CreateRenderer() = 0;
 };
-
 } // namespace lw
 
 #endif // LIGHTWEIGHTGUI_IRENDERER_H

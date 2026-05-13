@@ -14,6 +14,7 @@
 namespace lw {
 struct LwSize {
     int width, height;
+
     bool operator==(const LwSize& other) const {
         return width == other.width && height == other.height;
     }
@@ -43,6 +44,7 @@ struct LwColor : Color {
     constexpr LwColor(const Color& c)
         : Color(c) {
     }
+
     constexpr LwColor(const LwColor& c)
         : Color(c) {
     }

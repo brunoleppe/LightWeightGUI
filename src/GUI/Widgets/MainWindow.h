@@ -34,8 +34,7 @@ public:
             InitWindow(width, height, title);
         }
         transform = {0, 0, width, height};
-        name = "MainWindow_"+std::to_string(reinterpret_cast<long long>(this));
-
+        name = "MainWindow_" + std::to_string(reinterpret_cast<long long>(this));
     }
 
     ~MainWindow() override {
@@ -46,7 +45,6 @@ public:
         return std::make_unique<MainWindowRenderer>(this);
     }
 };
-
 
 
 inline void MainWindowRenderer::Render(const Rect& /*parentAbsRect*/) {

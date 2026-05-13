@@ -10,7 +10,6 @@
 #include "Widget.h"
 
 namespace lw {
-
 class OverlayRoot;
 
 class OverlayRootRenderer : public IRenderer {
@@ -25,11 +24,11 @@ public:
     OverlayRoot() {
         zIndex = 1000;
     }
+
     std::unique_ptr<IRenderer> CreateRenderer() override {
         return std::make_unique<OverlayRootRenderer>();
     }
 };
-
 } // namespace lw
 
 #endif // LIGHTWEIGHTGUI_OVERLAYROOT_H

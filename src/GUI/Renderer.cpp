@@ -84,6 +84,5 @@ void RenderSubsystem::Render(Widget* overlay, Widget* root, const Rect& rect) {
     auto h = static_cast<float>(m_composite.texture.height);
     DrawTextureRec(m_composite.texture, {0.0f, 0.0f, w, -h}, {0.0f, 0.0f}, WHITE);
     RenderWidgetTree(overlay, rect);
-
 }
 } // lw

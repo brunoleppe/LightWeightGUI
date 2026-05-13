@@ -61,6 +61,7 @@ public:
     std::unique_ptr<IMeasurer> CreateMeasurer() override {
         return std::make_unique<LabelMeasurer>(this);
     }
+
     Property<std::string> text;
     Property<LwFont> font;
 };

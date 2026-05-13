@@ -10,7 +10,6 @@
 #include "Types.h"
 
 namespace lw {
-
 class Widget;
 
 class InputSystem {
@@ -25,7 +24,6 @@ class InputSystem {
 public:
     void Process(Widget* overlay, Widget* root, const InputState& input, const Rect& rootRect);
 };
-
 } // namespace lw
 
 #endif // LIGHTWEIGHTGUI_INPUTSYSTEM_H

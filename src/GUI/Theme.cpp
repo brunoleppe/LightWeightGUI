@@ -4,6 +4,5 @@
 
 #include "Theme.h"
 
-namespace lw
-{
+namespace lw {
 } // lw

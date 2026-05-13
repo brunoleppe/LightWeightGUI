@@ -35,6 +35,22 @@ add_executable(LightWeightGUI src/main.cpp
         src/GUI/Utils.h
         src/GUI/Widgets/BaseButton.h
         src/GUI/Widgets/Label.h
+        # RHI interfaces
+        src/GUI/RHI/Handles.h
+        src/GUI/RHI/Geometry.h
+        src/GUI/RHI/Brush.h
+        src/GUI/RHI/Paint.h
+        src/GUI/RHI/DrawCommand.h
+        src/GUI/RHI/IRenderDevice.h
+        src/GUI/RHI/ICanvas2D.h
+        src/GUI/RHI/ITextBackend.h
+        # Raylib backend
+        src/GUI/RHI/Raylib/RaylibRenderDevice.h
+        src/GUI/RHI/Raylib/RaylibRenderDevice.cpp
+        src/GUI/RHI/Raylib/RaylibCanvas2D.h
+        src/GUI/RHI/Raylib/RaylibCanvas2D.cpp
+        src/GUI/RHI/Raylib/RaylibTextBackend.h
+        src/GUI/RHI/Raylib/RaylibTextBackend.cpp
 )
 
 if(EMSCRIPTEN)
@@ -51,4 +67,4 @@ if(EMSCRIPTEN)
 endif()
 
 target_link_libraries(LightWeightGUI raylib)
-target_include_directories(LightWeightGUI PRIVATE src src/GUI src/GUI/Widgets)
+target_include_directories(LightWeightGUI PRIVATE src src/GUI src/GUI/Widgets src/GUI/RHI)

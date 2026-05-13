@@ -24,7 +24,6 @@ class Application {
     void Update();
 
 public:
-
     static Widget* AddToOverlay(std::unique_ptr<Widget> widget);
 
     Application(const Application&) = delete;
