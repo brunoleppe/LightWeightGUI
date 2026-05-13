@@ -70,7 +70,7 @@ struct Theme {
     PanelMaterial panelBackground{
         {FillType::Solid, DEFAULT_BACKGROUND_COLOR},
         0.f,
-        {DEFAULT_LINE_COLOR, 0}
+        {DEFAULT_LINE_COLOR, 2}
     };
     PanelMaterial floatingCard{
         {FillType::Solid, DEFAULT_BACKGROUND_COLOR},

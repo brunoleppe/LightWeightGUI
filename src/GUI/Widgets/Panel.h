@@ -34,6 +34,7 @@ public:
         return std::make_unique<PanelRenderer>(this);
     }
 };
+
 inline void PanelRenderer::Render(const Rect& rect) {
     const float lineOffset = 2;
     Rectangle panelRect = {
@@ -46,16 +47,26 @@ inline void PanelRenderer::Render(const Rect& rect) {
     LwColor panelColor;
     if (m_panel->backgroundColor.IsSet()) {
         panelColor = m_panel->backgroundColor;
+    } else {
+        panelColor = DrawingUtils::GetElevationColor(Theme::Get().panelBackground.surface.color1,
+                                                     Theme::Get().GetAlpha(m_panel->zIndex));
     }
-    else {
-        panelColor = DrawingUtils::GetElevationColor(Theme::Get().panelBackground.surface.color1, Theme::Get().GetAlpha(m_panel->zIndex));
-    }
-    DrawingUtils::DrawWidgetShadow(panelRect, m_panel->zIndex,0);
+    DrawingUtils::DrawWidgetShadow(panelRect, m_panel->zIndex, 0);
     if (Theme::Get().panelBackground.cornerRadius == 0.f) {
         DrawRectangle(panelRect.x, panelRect.y, panelRect.width, panelRect.height, panelColor);
-    }
-    else {
+    } else {
         DrawRectangleRounded(panelRect, Theme::Get().panelBackground.cornerRadius, 16, panelColor);
+    }
+
+    if (Theme::Get().panelBackground.border.thickness > 0) {
+        if (Theme::Get().panelBackground.cornerRadius == 0.f) {
+            DrawRectangleLinesEx(panelRect, Theme::Get().panelBackground.border.thickness,
+                                 Theme::Get().panelBackground.border.color);
+        } else {
+            DrawRectangleRoundedLines(panelRect, Theme::Get().panelBackground.cornerRadius, 16,
+                                      Theme::Get().panelBackground.border.thickness,
+                                      Theme::Get().panelBackground.border.color);
+        }
     }
 }
 } // llw
