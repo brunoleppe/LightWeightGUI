@@ -13,18 +13,13 @@ int main(int argc, char* argv[]) {
     auto* p1 = static_cast<lw::LayoutPanel*>(w->AddWidget(std::make_unique<lw::LayoutPanel>()));
     auto* p2 = static_cast<lw::Panel*>(w->AddWidget(std::make_unique<lw::Panel>()));
     p1->transform = {0,0,200,450};
-    p1->backgroundColor = {RED};
     p1->name = "Panel1";
     p2->transform = {200,0,200,450};
-    p2->backgroundColor = {GREEN};
     p2->name = "Panel2";
 
     auto* p4 = static_cast<lw::Panel*>(p1->AddWidget(std::make_unique<lw::Panel>()));
-    p4->backgroundColor = {YELLOW};
     auto* p5 = static_cast<lw::Panel*>(p1->AddWidget(std::make_unique<lw::Panel>()));
-    p5->backgroundColor = {YELLOW};
     auto* p6 = static_cast<lw::Panel*>(p1->AddWidget(std::make_unique<lw::Panel>()));
-    p6->backgroundColor = {YELLOW};
 
     p4->name = "Panel4";
     p5->name = "Panel5";
@@ -46,7 +41,6 @@ int main(int argc, char* argv[]) {
     });
 
     auto* over1 = lw::Application::AddToOverlay(std::make_unique<lw::Panel>());
-    over1->backgroundColor = {DARKBLUE};
     over1->transform = {200,175,50,50};
     over1->name = "Overlay1";
 
